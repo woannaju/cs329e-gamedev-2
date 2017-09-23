@@ -19,7 +19,7 @@ function preload() {
     //game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
     game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
     game.load.spritesheet('enemy', 'assets/enemy.png', 76, 108);
-    game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 103, 125);
+    game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 103, 135);
 }
 
 var player1;
@@ -70,7 +70,7 @@ function create() {
     player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
     player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
     player2.animations.add('forwards', [15, 16, 17, 18, 19], 5, true);
-    player2.animations.add('jump', [25, 27, 28, 29, 30], 5, true);
+    player2.animations.add('jump', [25, 27, 28, 29, 30,31,32,33,34], 10, true);
     player2.animations.add('crouch', [23], 5, true);
     
     
