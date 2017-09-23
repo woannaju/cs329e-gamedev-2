@@ -147,19 +147,22 @@ function update() {
     //player2 controls
     if (leftButton.isDown) {
         player2.body.velocity.x = -150;
-        player2.animations.play('forwards');
-
+        if (player2.body.onFloor()) {
+            player2.animations.play('forwards');
+        }
     } 
     else if (rightButton.isDown) {
-        player2.body.velocity.x = 150;  
-        player2.animations.play('backwards');
+        player2.body.velocity.x = 150;
+        if (player2.body.onFloor()) {
+            player2.animations.play('backwards');
+        }
 
     } 
     else if (downButton.isDown) {
             // crouch
-            player2.body.velocity.x = 0;
-            player2.animations.play('crouch');
-        }
+        player2.body.velocity.x = 0;
+        player2.animations.play('crouch');
+    }
     else {
         if (player2.body.onFloor()) {
             player2.animations.play('idle');
