@@ -16,7 +16,8 @@ var game = new Phaser.Game(1024, 576, Phaser.AUTO, '', {preload: preload, create
 function preload() {
 	game.load.image('dojo_bg', 'assets/dojo_background.jpg');
     game.load.image('dark_bg', 'assets/dark_background.jpg');
-    game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
+    //game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
+    game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
     game.load.spritesheet('enemy', 'assets/enemy.png', 76, 108);
 }
 
@@ -29,7 +30,7 @@ function create() {
 	game.add.sprite(0,0,'dojo_bg');
     
 
-    player1 = game.add.sprite(500,340, 'ryuStand');
+    player1 = game.add.sprite(500,340, 'ryu');
     player2 = game.add.sprite(850, 340, 'enemy');
     player1.scale.setTo(2,2);
     player2.scale.setTo(2,2);
@@ -43,8 +44,10 @@ function create() {
     player2.body.gravity.y = 300;
     player2.body.collideWorldBounds = true;
 
-    player1.animations.add('idle', [0, 1, 2, 3], 10, true);
-    // player1.animations.add('right', [5, 6, 7, 8], 10, true);
+    player1.animations.add('idle', [0, 1, 2, 3, 4, 5], 5, true);
+    player1.animations.add('backwards', [6, 7, 8, 9, 10, 11], 5, true);
+    player1.animations.add('forwards', [12, 13, 14, 15, 16, 17], 5, true);
+    player1.animations.add('jump', [18, 19, 21, 22, 23, 24], 5, true);
 
     cursors = game.input.keyboard.createCursorKeys();
 
@@ -58,8 +61,22 @@ function update() {
             //  Move to the left
             player1.body.velocity.x = -150;
 
-            //player1.animations.play('left');
-        }   
+            player1.animations.play('backwards');
+        }
+    else if (cursors.right.isDown)
+        {
+            //  Move to the left
+            player1.body.velocity.x = 150;
+
+            player1.animations.play('forwards');
+        } 
+    else if (cursors.up.isDown)// && player1.body.touching.down)
+        {
+            //  Move to the left
+            player1.body.velocity.y = -250;
+
+            player1.animations.play('jump');
+        }
     else
     {
         //  Stand still
