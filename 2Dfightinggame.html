@@ -11,10 +11,13 @@
 
 <script type="text/javascript">
     
-var game = new Phaser.Game(1024, 576, Phaser.AUTO, '', {preload: preload, create: create, update: update});
+var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', {preload: preload, create: create, update: update});
     
 function preload() {
 	game.load.image('dojo_bg', 'assets/dojo_background.jpg');
+    game.load.image('dark_bg', 'assets/dark_background.jpg');
+    game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
+    game.load.spritesheet('enemy', 'assets/enemy.png', 76, 108);
 }
 	
 var player1;
@@ -22,8 +25,9 @@ var player2;
 
 function create() {
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-	game.add.sprite(0,0,'dojo_bg');
-    
+	game.add.sprite(0,0,'dark_bg');
+    player1 = game.add.sprite(0,420, 'ryuStand');
+    player2 = game.add.sprite(950, 420, 'enemy');    
 }    
 
 function update() {
