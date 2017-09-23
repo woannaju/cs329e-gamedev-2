@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
     
-var game = new Phaser.Game(1024, 576, Phaser.AUTO, '', {preload: preload, create: create, update: update});
+var game = new Phaser.Game(1024, 576, Phaser.AUTO, '', {preload: preload, create: create, update: update, render: render});
     
 function preload() {
 	game.load.image('dojo_bg', 'assets/dojo_background.jpg');
@@ -19,6 +19,7 @@ function preload() {
     //game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
     game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
     game.load.spritesheet('enemy', 'assets/enemy.png', 76, 108);
+    game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 100, 123);
 }
 
 var player1;
@@ -31,14 +32,16 @@ function create() {
     
 
     player1 = game.add.sprite(500,340, 'ryu');
-    player2 = game.add.sprite(850, 340, 'enemy');
+    player2 = game.add.sprite(850, 340, 'ken');
     player1.scale.setTo(2,2);
-    player2.scale.setTo(2,2);
+    player2.scale.setTo(1.78,1.78);
 
     game.physics.arcade.enable(player1);
     game.physics.arcade.enable(player2);
+    game.physics.arcade.collide(player1, player2);
+
     player1.body.bounce.y = 0.2;
-    player1.body.gravity.y = 300;
+    player1.body.gravity.y = 600;
     player1.body.collideWorldBounds = true;
     player2.body.bounce.y = 0.2;
     player2.body.gravity.y = 300;
@@ -51,12 +54,14 @@ function create() {
     player1.animations.add('shoruken', [24, 25, 26, 27, 28, 29], 5, true);
     player1.animations.add('crouch', [42], 5, true);
     
+    player2.animations.add('idle', [0, 1, 2, 3, 4], 5, true);
     cursors = game.input.keyboard.createCursorKeys();
 
 }    
 
 function update() {
     player1.body.velocity.x = 0;
+    player2.animations.play('idle');
 
 
 
@@ -107,13 +112,19 @@ function update() {
         {
             //  Jump
 
-            player1.body.velocity.y = -250;
+            player1.body.velocity.y = -475;
 
             player1.animations.play('jump');
         }
 
 
 }
+    
+function render() {
+    game.debug.body(player1);
+    game.debug.body(player2);
+}
+    
 
 
     
