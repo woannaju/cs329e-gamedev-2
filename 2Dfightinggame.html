@@ -19,7 +19,7 @@ function preload() {
     //game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
     game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
     game.load.spritesheet('enemy', 'assets/enemy.png', 76, 108);
-    game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 100, 123);
+    game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 103, 125);
 }
 
 var player1;
@@ -45,7 +45,7 @@ function create() {
     player1.body.gravity.y = 600;
     player1.body.collideWorldBounds = true;
     player2.body.bounce.y = 0.2;
-    player2.body.gravity.y = 300;
+    player2.body.gravity.y = 600;
     player2.body.collideWorldBounds = true;
 
     player1.body.setSize(85,120,25,25);
@@ -67,7 +67,13 @@ function create() {
     player1.animations.add('shoruken', [24, 25, 26, 27, 28, 29], 5, true);
     player1.animations.add('crouch', [42], 5, true);
     
-    player2.animations.add('idle', [0, 1, 2, 3, 4], 5, true);
+    player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
+    player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
+    player2.animations.add('forwards', [15, 16, 17, 18, 19], 5, true);
+    player2.animations.add('jump', [25, 27, 28, 29, 30], 5, true);
+    player2.animations.add('crouch', [23], 5, true);
+    
+    
     cursors = game.input.keyboard.createCursorKeys();
 
 }    
@@ -90,63 +96,80 @@ function disableAllHitboxes() {
 
 function update() {
     player1.body.velocity.x = 0;
-    player2.animations.play('idle');
+    player2.body.velocity.x = 0;
+    
+    upButton = game.input.keyboard.addKey(Phaser.Keyboard.W);
+    downButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
+    leftButton = game.input.keyboard.addKey(Phaser.Keyboard.A);
+    rightButton = game.input.keyboard.addKey(Phaser.Keyboard.D);
 
     game.physics.arcade.overlap(player1, player2, overlap, null, this);
 
-
-    if (cursors.left.isDown && cursors.right.isDown)
-        {
+    //player1 controls
+    if (cursors.left.isDown && cursors.right.isDown) {
             player1.animations.play('shoruken');
         }
 
-    else if (cursors.left.isDown)
-        {
+    else if (cursors.left.isDown) {
             //  Move to the left
             player1.body.velocity.x = -150;
-
             if (player1.body.onFloor()) {
-
                 player1.animations.play('backwards');
             }
         }
-    else if (cursors.right.isDown)
-        {
+    else if (cursors.right.isDown) {
             //  Move to the left
             player1.body.velocity.x = 150;
-
             if (player1.body.onFloor()) {
-
                 player1.animations.play('forwards');
             }
         } 
-    else if (cursors.down.isDown)
-        {
+    else if (cursors.down.isDown) {
             // crouch
             player1.body.velocity.x = 0;
-
             player1.animations.play('crouch');
         }
-    else
-    {
+    else {
         //  Stand still
         if (player1.body.onFloor()) {
-
             player1.animations.play('idle');
         }
-
         //player.frame = 2;
     }
-
-    if (cursors.up.isDown && player1.body.onFloor())
-        {
+    if (cursors.up.isDown && player1.body.onFloor()){
             //  Jump
-
             player1.body.velocity.y = -475;
-
             player1.animations.play('jump');
         }
 
+    
+    
+    //player2 controls
+    if (leftButton.isDown) {
+        player2.body.velocity.x = -150;
+        player2.animations.play('forwards');
+
+    } 
+    else if (rightButton.isDown) {
+        player2.body.velocity.x = 150;  
+        player2.animations.play('backwards');
+
+    } 
+    else if (downButton.isDown) {
+            // crouch
+            player2.body.velocity.x = 0;
+            player2.animations.play('crouch');
+        }
+    else {
+        if (player2.body.onFloor()) {
+            player2.animations.play('idle');
+        }
+    }
+    if (upButton.isDown && player2.body.onFloor()){
+            //  Jump
+            player2.body.velocity.y = -475;
+            player2.animations.play('jump');
+        }
 
 }
     
