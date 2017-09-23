@@ -29,7 +29,7 @@ function create() {
 	game.add.sprite(0,0,'dojo_bg');
     
 
-    player1 = game.add.sprite(20,340, 'ryuStand');
+    player1 = game.add.sprite(500,340, 'ryuStand');
     player2 = game.add.sprite(850, 340, 'enemy');
     player1.scale.setTo(2,2);
     player2.scale.setTo(2,2);
@@ -43,7 +43,7 @@ function create() {
     player2.body.gravity.y = 300;
     player2.body.collideWorldBounds = true;
 
-    player1.animations.add('left', [0, 1, 2, 3], 10, true);
+    player1.animations.add('idle', [0, 1, 2, 3], 10, true);
     // player1.animations.add('right', [5, 6, 7, 8], 10, true);
 
     cursors = game.input.keyboard.createCursorKeys();
@@ -51,13 +51,22 @@ function create() {
 }    
 
 function update() {
+    player1.body.velocity.x = 0;
+    
     if (cursors.left.isDown)
         {
             //  Move to the left
             player1.body.velocity.x = -150;
 
-            player1.animations.play('left');
-        }
+            //player1.animations.play('left');
+        }   
+    else
+    {
+        //  Stand still
+        player1.animations.play('idle');
+
+        //player.frame = 2;
+    }
 }
 
 
