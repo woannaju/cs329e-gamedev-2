@@ -25,6 +25,7 @@ function preload() {
 var player1;
 var player2;	
 var cursors;
+var hitboxes1;
 
 function create() {
 	game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -47,6 +48,18 @@ function create() {
     player2.body.gravity.y = 300;
     player2.body.collideWorldBounds = true;
 
+    player1.body.setSize(85,120,25,25);
+
+    hitboxes1 = game.add.group();
+    hitboxes1.enableBody = true;
+    player1.addChild(hitboxes1);
+
+    var hitbox1 = hitboxes1.create(500,340,null)
+    hitbox1.body.setSize(100, 100, 85, 120 / 2);
+    hitbox1.name = 'trial';
+    enableHitbox('trial')
+
+
     player1.animations.add('idle', [0, 1, 2, 3, 4, 5], 5, true);
     player1.animations.add('backwards', [6, 7, 8, 9, 10, 11], 5, true);
     player1.animations.add('forwards', [12, 13, 14, 15, 16, 17], 5, true);
@@ -59,10 +72,27 @@ function create() {
 
 }    
 
+function enableHitbox(hitboxName) {
+    for(var i = 0; i < hitboxes1.children.length; i++){
+
+        if(hitboxes1.children[i].name === hitboxName){
+            hitboxes1.children[i].reset(0,0);               
+
+        }
+    }
+}
+
+function disableAllHitboxes() {     
+    hitboxes1.forEachExists(function(hitbox) {          
+        hitbox.kill();     
+    });
+}
+
 function update() {
     player1.body.velocity.x = 0;
     player2.animations.play('idle');
 
+    game.physics.arcade.overlap(player1, player2, overlap, null, this);
 
 
     if (cursors.left.isDown && cursors.right.isDown)
@@ -123,8 +153,20 @@ function update() {
 function render() {
     game.debug.body(player1);
     game.debug.body(player2);
+
+    hitboxes1.forEachAlive(renderGroup, this);
+
 }
-    
+
+function renderGroup(member) { 
+   game.debug.body(member);
+}
+
+function overlap(player1, player2) {
+
+    player2.kill();
+    console.log('killed player 2')
+}
 
 
     
