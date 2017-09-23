@@ -70,13 +70,6 @@ function update() {
 
             player1.animations.play('forwards');
         } 
-    else if (cursors.up.isDown)// && player1.body.touching.down)
-        {
-            //  Move to the left
-            player1.body.velocity.y = -250;
-
-            player1.animations.play('jump');
-        }
     else
     {
         //  Stand still
@@ -84,6 +77,15 @@ function update() {
 
         //player.frame = 2;
     }
+
+    if (cursors.up.isDown && player1.body.onFloor())
+        {
+            //  Jump
+
+            player1.body.velocity.y = -250;
+
+            player1.animations.play('jump');
+        }
 }
 
 
