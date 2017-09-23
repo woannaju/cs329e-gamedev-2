@@ -47,7 +47,7 @@ function create() {
     player1.animations.add('idle', [0, 1, 2, 3, 4, 5], 5, true);
     player1.animations.add('backwards', [6, 7, 8, 9, 10, 11], 5, true);
     player1.animations.add('forwards', [12, 13, 14, 15, 16, 17], 5, true);
-    player1.animations.add('jump', [18, 19, 21, 22, 23, 24], 5, true);
+    player1.animations.add('jump', [18, 19, 20, 21, 22, 23], 5, true);
 
     cursors = game.input.keyboard.createCursorKeys();
 
@@ -61,19 +61,28 @@ function update() {
             //  Move to the left
             player1.body.velocity.x = -150;
 
-            player1.animations.play('backwards');
+            if (player1.body.onFloor()) {
+
+                player1.animations.play('backwards');
+            }
         }
     else if (cursors.right.isDown)
         {
             //  Move to the left
             player1.body.velocity.x = 150;
 
-            player1.animations.play('forwards');
+            if (player1.body.onFloor()) {
+
+                player1.animations.play('forwards');
+            }
         } 
     else
     {
         //  Stand still
-        player1.animations.play('idle');
+        if (player1.body.onFloor()) {
+
+            player1.animations.play('idle');
+        }
 
         //player.frame = 2;
     }
