@@ -35,7 +35,7 @@ function create() {
 	game.add.sprite(0,0,'dojo_bg');
     
     timer = game.time.create();
-    timerEvent = timer.add(Phaser.Timer.SECOND * 2, endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 59, endTimer, this);
     
     timer.start();
 
