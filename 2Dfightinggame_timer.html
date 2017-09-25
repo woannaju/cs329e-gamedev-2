@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
     
-var game = new Phaser.Game(1024, 576, Phaser.AUTO, '', {preload: preload, create: create, update: update, render: render});
+var game = new Phaser.Game(1024, 525, Phaser.AUTO, '', {preload: preload, create: create, update: update, render: render});
     
 function preload() {
 	game.load.image('dojo_bg', 'assets/dojo_background.jpg');
@@ -26,13 +26,20 @@ var player1;
 var player2;	
 var cursors;
 var hitboxes1;
+var timer;
+var timerEvent;
+var text;
 
 function create() {
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 	game.add.sprite(0,0,'dojo_bg');
     
+    timer = game.time.create();
+    timerEvent = timer.add(Phaser.Timer.SECOND * 60, this.endTimer, this);
+    
+    timer.start();
 
-    player1 = game.add.sprite(500,340, 'ryu');
+    player1 = game.add.sprite(500, 400, 'ryu');
     player2 = game.add.sprite(850, 400, 'ken');
     player1.scale.setTo(2,2);
     player2.scale.setTo(1.78,1.78);
@@ -42,10 +49,10 @@ function create() {
     game.physics.arcade.collide(player1, player2);
 
     player1.body.bounce.y = 0.2;
-    player1.body.gravity.y = 600;
+    player1.body.gravity.y = 800;
     player1.body.collideWorldBounds = true;
     player2.body.bounce.y = 0.2;
-    player2.body.gravity.y = 600;
+    player2.body.gravity.y = 800;
     player2.body.collideWorldBounds = true;
 
     player1.body.setSize(85,120,25,25);
@@ -64,13 +71,13 @@ function create() {
     player1.animations.add('backwards', [6, 7, 8, 9, 10, 11], 5, true);
     player1.animations.add('forwards', [12, 13, 14, 15, 16, 17], 5, true);
     player1.animations.add('jump', [18, 19, 20, 21, 22, 23], 5, true);
-    player1.animations.add('shoruken', [24, 25, 26, 27, 28, 29], 5, true);
+    player1.animations.add('shoruken', [24, 25, 26, 27, 28, 29], 7, true);
     player1.animations.add('crouch', [42], 5, true);
     
     player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
     player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
     player2.animations.add('forwards', [15, 16, 17, 18, 19], 5, true);
-    player2.animations.add('jump', [25, 27, 28, 29, 30,31,32,33,34], 10, true);
+    player2.animations.add('jump', [25, 27, 28, 29, 30,31,32,33,34], 7, true);
     player2.animations.add('crouch', [23], 5, true);
     
     
@@ -112,14 +119,14 @@ function update() {
 
     else if (cursors.left.isDown) {
             //  Move to the left
-            player1.body.velocity.x = -150;
+            player1.body.velocity.x = -200;
             if (player1.body.onFloor()) {
                 player1.animations.play('backwards');
             }
         }
     else if (cursors.right.isDown) {
             //  Move to the left
-            player1.body.velocity.x = 150;
+            player1.body.velocity.x = 200;
             if (player1.body.onFloor()) {
                 player1.animations.play('forwards');
             }
@@ -138,7 +145,7 @@ function update() {
     }
     if (cursors.up.isDown && player1.body.onFloor()){
             //  Jump
-            player1.body.velocity.y = -475;
+            player1.body.velocity.y = -500;
             player1.animations.play('jump');
         }
 
@@ -170,13 +177,30 @@ function update() {
     }
     if (upButton.isDown && player2.body.onFloor()){
             //  Jump
-            player2.body.velocity.y = -475;
+            player2.body.velocity.y = -500;
             player2.animations.play('jump');
         }
 
 }
     
 function render() {
+    
+    if(timer.running) {
+        game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
+    }
+    else {
+        game.debug.text("End of Round", 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
+    }
+    
+    function endTimer() {
+        timer.stop();
+    }
+    function formatTime(s) {
+        var minutes = "0" + Math.floor(s / 60);
+        var seconds = "0" + (s - minutes * 60);
+        return seconds.substr(-2);  
+    }
+    
     game.debug.body(player1);
     game.debug.body(player2);
 
