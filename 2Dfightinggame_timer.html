@@ -35,7 +35,7 @@ function create() {
 	game.add.sprite(0,0,'dojo_bg');
     
     timer = game.time.create();
-    timerEvent = timer.add(Phaser.Timer.SECOND * 60, this.endTimer, this);
+    timerEvent = timer.add(Phaser.Timer.SECOND * 2, endTimer, this);
     
     timer.start();
 
@@ -61,10 +61,10 @@ function create() {
     hitboxes1.enableBody = true;
     player1.addChild(hitboxes1);
 
-    var hitbox1 = hitboxes1.create(500,340,null)
+    var hitbox1 = hitboxes1.create(500,340,null);
     hitbox1.body.setSize(100, 100, 85, 120 / 2);
     hitbox1.name = 'trial';
-    enableHitbox('trial')
+    enableHitbox('trial');
 
 
     player1.animations.add('idle', [0, 1, 2, 3, 4, 5], 5, true);
@@ -189,12 +189,9 @@ function render() {
         game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
     }
     else {
-        game.debug.text("End of Round", 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
+        game.debug.text("End of Round", 200, 250, "#ffb64d", '100px ScriptoramaMarkdownJF');
     }
     
-    function endTimer() {
-        timer.stop();
-    }
     function formatTime(s) {
         var minutes = "0" + Math.floor(s / 60);
         var seconds = "0" + (s - minutes * 60);
@@ -208,6 +205,9 @@ function render() {
 
 }
 
+function endTimer() {
+    timer.stop();
+}
 function renderGroup(member) { 
    game.debug.body(member);
 }
@@ -215,7 +215,7 @@ function renderGroup(member) {
 function overlap(player1, player2) {
 
     player2.kill();
-    console.log('killed player 2')
+    console.log('killed player 2');
 }
 
     
