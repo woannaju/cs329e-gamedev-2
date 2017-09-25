@@ -1,9 +1,11 @@
 <!doctype html> 
 <html lang="en"> 
 <head> 
-	<meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <title>2D Fighting Game</title>
-	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="js/HealthMeter.js"></script>
+
     <style type="text/css">
     </style>
 </head>
@@ -14,26 +16,25 @@
 var game = new Phaser.Game(1024, 576, Phaser.AUTO, '', {preload: preload, create: create, update: update, render: render});
     
 function preload() {
-	game.load.image('dojo_bg', 'assets/dojo_background.jpg');
+    game.load.image('dojo_bg', 'assets/dojo_background.jpg');
     game.load.image('dark_bg', 'assets/dark_background.jpg');
-    //game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
     game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
     game.load.spritesheet('enemy', 'assets/enemy.png', 76, 108);
     game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 103, 135);
 }
 
 var player1;
-var player2;	
+var player2;    
 var cursors;
 var hitboxes1;
 
 function create() {
-	game.physics.startSystem(Phaser.Physics.ARCADE);
-	game.add.sprite(0,0,'dojo_bg');
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.add.sprite(0,0,'dojo_bg');
     
 
     player1 = game.add.sprite(500,340, 'ryu');
-    player2 = game.add.sprite(850, 340, 'ken');
+    player2 = game.add.sprite(850, 400, 'ken');
     player1.scale.setTo(2,2);
     player2.scale.setTo(1.78,1.78);
 
@@ -44,9 +45,13 @@ function create() {
     player1.body.bounce.y = 0.2;
     player1.body.gravity.y = 600;
     player1.body.collideWorldBounds = true;
+    player1.health = 10;
+    player1.maxHealth = 100;
     player2.body.bounce.y = 0.2;
     player2.body.gravity.y = 600;
     player2.body.collideWorldBounds = true;
+    player2.health = 10;
+    player2.maxHealth = 100;
 
     player1.body.setSize(85,120,25,25);
 
@@ -58,6 +63,10 @@ function create() {
     hitbox1.body.setSize(100, 100, 85, 120 / 2);
     hitbox1.name = 'trial';
     enableHitbox('trial')
+
+    invincibleTimer = 0;
+
+    healthMeterBar = game.add.plugin(Phaser.Plugin.HealthMeter);
 
 
     player1.animations.add('idle', [0, 1, 2, 3, 4, 5], 5, true);
@@ -74,9 +83,21 @@ function create() {
     player2.animations.add('crouch', [23], 5, true);
     
     
-    cursors = game.input.keyboard.createCursorKeys();
+    //cursors = game.input.keyboard.createCursorKeys();
 
 }    
+
+function createHealthbars() {
+    ryu.health = 50;
+    ryu.maxHealth = 100;
+    ryuHealthMeter = this.game.add.plugin(Phaser.Plugin.HealthMeter);
+    ryuHealthMeter.bar(ryu, {x: 20, y: 100, width: 100, height: 20});
+
+    ken.health = 50;
+    ken.maxHealth = 100;
+    kenHealthMeter = this.game.add.plugin(Phaser.Plugin.HealthMeter);
+    kenHealthMeter.bar(ken, {x: 40, y: 200, width: 100, height: 20});
+}
 
 function enableHitbox(hitboxName) {
     for(var i = 0; i < hitboxes1.children.length; i++){
@@ -194,16 +215,7 @@ function overlap(player1, player2) {
     console.log('killed player 2')
 }
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
+ 
     
     
 </script>
