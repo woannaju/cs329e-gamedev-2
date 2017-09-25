@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
     
-var game = new Phaser.Game(1024, 576, Phaser.AUTO, '', {preload: preload, create: create, update: update, render: render});
+var game = new Phaser.Game(1024, 576, Phaser.CANVAS, '', {preload: preload, create: create, update: update, render: render});
     
 function preload() {
 	game.load.image('dojo_bg', 'assets/dojo_background.jpg');
@@ -26,6 +26,7 @@ var player1;
 var player2;	
 var cursors;
 var hitboxes1;
+var hitbox1;
 
 function create() {
 	game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -34,10 +35,13 @@ function create() {
     hitboxes1 = game.add.group();
     hitboxes1.enableBody = true;
 
+
     player1 = game.add.sprite(500,340, 'ryu');
     player2 = game.add.sprite(850, 340, 'ken');
     player1.scale.setTo(2,2);
     player2.scale.setTo(1.78,1.78);
+
+    
 
     game.physics.arcade.enable(player1);
     game.physics.arcade.enable(player2);
@@ -51,13 +55,19 @@ function create() {
     player2.body.collideWorldBounds = true;
 
     player1.body.setSize(85,120,25,25);
-
-    
-    var hitbox1 = hitboxes1.create(100,100,null);
+    hitbox1 = hitboxes1.create(0,0,null,0,false);
     // hitbox1.body.allowGravity = false;
-    hitbox1.body.setSize(100, 100, 85, 120 / 2);
+    hitbox1.body.setSize(100, 100, 50, 50);
+    console.log(hitbox1.body.size);
+    hitbox1.x = player1.x;
+    hitbox1.y = player1.y;
+
+    console.log(player1.body.position);
+    console.log(hitbox1.body.position);
     hitbox1.name = 'trial';
-    player1.addChild(hitboxes1);
+    console.log('added hitboxes1')
+    // player1.addChild(hitboxes1);
+
 
     // enableHitbox('trial')
 
@@ -91,10 +101,19 @@ function create() {
 // }
 
 function update() {
+    // hitbox1.body.size = (100,100);
+
+    // hitbox1.x = player1.x;
+    // hitbox1.y = player1.y;
+    // console.log('SIZE', hitbox1.body.size);
+    console.log('HITBOX', hitbox1.x, hitbox1.y);
+    console.log('PLAYER', player1.x, player1.y);
+
+
     player1.body.velocity.x = 0;
     player2.animations.play('idle');
 
-    game.physics.arcade.overlap(player1, player2, overlap, null, this);
+    game.physics.arcade.overlap(hitbox1, player2, overlap, null, this);
 
 
     if (cursors.left.isDown && cursors.right.isDown)
@@ -155,13 +174,15 @@ function update() {
 function render() {
     // game.debug.body(player1);
     game.debug.body(player2);
+    game.debug.body(hitbox1);
+    game.debug.spriteInfo(hitbox1);
     // game.debug.spriteInfo(player1, 32, 32);
     // hitboxes1.forEachAlive(game.debug.body(this, 'rgba(0,132,0,0.1'), this);
-    for (var i = 0; i < hitboxes1.children.length; i++) {
+    // for (var i = 0; i < hitboxes1.children.length; i++) {
 
-        game.debug.body(hitboxes1.children[i], 'rgba(0,255,0,0.5)');
-        game.debug.spriteInfo(hitboxes1.children[i], 64, 64);
-    }
+    //     game.debug.bodyInfo(hitboxes1.children[i], 'rgba(0,255,0,0.5)');
+    //     // game.debug.spriteInfo(hitboxes1.children[i], 32, 32);
+    // }
 
 }
 
