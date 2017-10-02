@@ -21,6 +21,10 @@ function preload() {
     game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
     game.load.spritesheet('enemy', 'assets/enemy.png', 76, 108);
     game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 103, 135);
+    
+    ryuHealthBar = game.plugins.add(Phaser.Plugin.HealthMeter);
+    kenHealthBar = game.plugins.add(Phaser.Plugin.HealthMeter);
+    
 }
 
 var player1;
@@ -64,9 +68,19 @@ function create() {
     hitbox1.name = 'trial';
     enableHitbox('trial')
 
+    //this.healthMeterBar = game.plugins.add(Phaser.Plugin.HealthMeter);
+    
     invincibleTimer = 0;
+    player1.health = 100;
+    player1.maxHealth = 100;
+    ryuHealthMeter = ryuHealthBar;
+    ryuHealthMeter.bar(player1, {x: 20, y: 30, width: 200, height: 20});
 
-    this.healthMeterBar = this.game.plugins.add(Phaser.Plugin.HealthMeter);
+    player2.health = 100;
+    player2.maxHealth = 100;
+    kenHealthMeter = kenHealthBar;
+    kenHealthMeter.bar(player2, {x: 804, y: 30, width: 200, height: 20});
+
 
 
     player1.animations.add('idle', [0, 1, 2, 3, 4, 5], 5, true);
@@ -87,17 +101,17 @@ function create() {
 
 }    
 
-function createHealthbars() {
-    ryu.health = 50;
-    ryu.maxHealth = 100;
-    ryuHealthMeter = this.game.add.plugin(Phaser.Plugin.HealthMeter);
-    ryuHealthMeter.bar(ryu, {x: 20, y: 100, width: 100, height: 20});
-
-    ken.health = 50;
-    ken.maxHealth = 100;
-    kenHealthMeter = this.game.add.plugin(Phaser.Plugin.HealthMeter);
-    kenHealthMeter.bar(ken, {x: 40, y: 200, width: 100, height: 20});
-}
+//function createHealthbars() {
+//    player1.health = 50;
+//    player1.maxHealth = 100;
+//    ryuHealthMeter = game.add(Phaser.Plugin.HealthMeter);
+//    ryuHealthMeter.bar(ryu, {x: 20, y: 100, width: 100, height: 20});
+//
+//    ken.health = 50;
+//    ken.maxHealth = 100;
+//    kenHealthMeter = game.add.plugin(Phaser.Plugin.HealthMeter);
+//    kenHealthMeter.bar(ken, {x: 40, y: 200, width: 100, height: 20});
+//}
 
 function enableHitbox(hitboxName) {
     for(var i = 0; i < hitboxes1.children.length; i++){
@@ -212,7 +226,7 @@ function renderGroup(member) {
 function overlap(player1, player2) {
 
     player2.kill();
-    console.log('killed player 2')
+    console.log('killed player 2');
 }
 
  
