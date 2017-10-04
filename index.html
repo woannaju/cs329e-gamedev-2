@@ -16,6 +16,7 @@ var game = new Phaser.Game(1024, 525, Phaser.AUTO, '', {preload: preload, create
 function preload() {
 	game.load.image('dojo_bg', 'assets/dojo_background.jpg');
     game.load.image('dark_bg', 'assets/dark_background.jpg');
+    game.load.image('test', 'assets/hadouken.png');
     //game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
     game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
     game.load.spritesheet('enemy', 'assets/enemy.png', 76, 108);
@@ -61,10 +62,33 @@ function create() {
     hitboxes1.enableBody = true;
     player1.addChild(hitboxes1);
 
-    //var hitbox1 = hitboxes1.create(500,340,null);
-    //hitbox1.body.setSize(100, 100, 85, 120 / 2);
-    //hitbox1.name = 'trial';
-    enableHitbox('trial');
+    game.physics.arcade.enable(hitboxes1); // this line must be before the body propety of a hitbox is modified
+
+
+
+    var hitbox1 = game.make.sprite(37, 50, null); // x pos, y pos, sprite name, all relative to player position 
+    var hitbox2 = game.make.sprite(45, 35, null);
+    var hitbox3 = game.make.sprite(30, 75, null);
+    var hitbox4 = game.make.sprite(60, 75, null);
+
+    hitboxes1.add(hitbox1);
+    hitboxes1.add(hitbox2);
+    hitboxes1.add(hitbox3);
+    hitboxes1.add(hitbox4);
+
+    hitbox1.name = 'torso';
+    hitbox2.name = 'head';
+    hitbox3.name = 'left_leg';
+    hitbox4.name = 'right_leg';
+
+    hitbox1.body.setSize(85,50,0,0); // size of sprite: width, height, offset width, offset height
+    hitbox2.body.setSize(50,30,0,0);
+    hitbox3.body.setSize(50,110,0,0);
+    hitbox4.body.setSize(50,110,0,0);
+
+    hitboxes1.forEachExists(function(hitbox) {   // hitboxes follow player properly by setting sprite.body.moves = false (not same as immovable)
+        hitbox.body.moves = false;     
+    });
 
 
     player1.animations.add('idle', [0, 1, 2, 3, 4, 5], 5, true);
@@ -89,16 +113,18 @@ function enableHitbox(hitboxName) {
     for(var i = 0; i < hitboxes1.children.length; i++){
 
         if(hitboxes1.children[i].name === hitboxName){
-            hitboxes1.children[i].reset(0,0);               
+            hitboxes1.children[i].reset(50,30);   // this is the specific location of the head hitbox            
 
         }
     }
+    console.log('reenabled ' + hitboxName + ' hitbox');
 }
 
 function disableAllHitboxes() {     
     hitboxes1.forEachExists(function(hitbox) {          
         hitbox.kill();     
     });
+    console.log('killed all hitboxes in hitboxes1')
 }
 
 function update() {
@@ -109,8 +135,10 @@ function update() {
     downButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
     leftButton = game.input.keyboard.addKey(Phaser.Keyboard.A);
     rightButton = game.input.keyboard.addKey(Phaser.Keyboard.D);
+    tButton = game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
+    yButton = game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
 
-    game.physics.arcade.overlap(player1, player2, overlap, null, this);
+    game.physics.arcade.overlap(hitboxes1, player2, overlap, null, this);
 
     //player1 controls
     if (cursors.left.isDown && cursors.right.isDown) {
@@ -181,6 +209,19 @@ function update() {
             player2.animations.play('jump');
         }
 
+
+    // Hitboxes1 controls
+
+    if (tButton.isDown) {
+
+        enableHitbox('head'); // if T is pressed down, the head hitbox is reenabled
+    }
+    else if (yButton.isDown) {
+
+        disableAllHitboxes(); // if Y is pressed down, all hitboxes in hitboxes1 are removed
+    }
+
+
 }
     
 function render() {
@@ -198,23 +239,23 @@ function render() {
         return seconds.substr(-2);  
     }
     
-    game.debug.body(player1);
+    // game.debug.body(player1);
     game.debug.body(player2);
 
-    hitboxes1.forEachAlive(renderGroup, this);
+    hitboxes1.forEachExists(function(hitbox) {          
+        game.debug.body(hitbox);     
+    });
 
 }
 
 function endTimer() {
     timer.stop();
 }
-function renderGroup(member) { 
-   game.debug.body(member);
-}
+
 
 function overlap(player1, player2) {
 
-    player2.kill();
+    player1.kill();
     console.log('killed player 2');
 }
 
