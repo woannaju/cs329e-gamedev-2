@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Joanna Wu Demo #1</title>
+    <script type ="text/javascript" src='js/phaser.min.js'></script>
+    <style>
+        body {
+            margin: 0;
+        }
+        div {
+            background-color: blanchedalmond;
+            color: darkblue;
+            text-align: center;
+        }
+    </style>
+        
+        
+    <script type="text/javascript">
+        
+        var game = new Phaser.Game(800, 600, Phaser.AUTO);
+        var player, cursors, scoreText, platform, score = 0, next;
+        var state1 = {
+            preload: function(){
+                game.load.image('sky', 'assets/sky.png');
+                game.load.image('ground', 'assets/platform.png');
+                game.load.image('star', 'assets/star.png');
+                game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+                game.load.image('next', 'assets/diamond.png');
+                
+            },
+            create: function(){
+                game.add.sprite(0,0,'sky');
+                next = game.add.group()
+                var nextL = next.create(25,122, 'next');
+                player = game.add.sprite(0,500,'dude');
+                
+                platforms = game.add.group();
+                platforms.enableBody = true;
+                
+                var ground = platforms.create(0, game.world.height-32, 'ground');
+                ground.scale.setTo(2,1);
+                ground.body.immovable = true;
+                
+                var ledge = platforms.create(0,400, 'ground');
+                ledge.body.immovable = true;
+                var ledge2 = platforms.create(600, 275, 'ground');
+                ledge2.body.immovable = true;
+                var ledge3 = platforms.create(0, 150, 'ground');
+                ledge3.body.immovable = true;
+                
+                
+                game.physics.startSystem(Phaser.Physics.ARCADE);
+                game.physics.arcade.enable(player);
+                player.body.bounce.y = 0.2;
+                player.body.gravity.y = 300;
+                player.body.collideWorldBounds = true;
+                player.animations.add('left', [0, 1, 2, 3], 10, true);
+                player.animations.add('right', [5, 6, 7, 8], 10, true);
+                next.enableBody = true;
+                //nextL.body.gravity.y = 300;
+                game.physics.arcade.enable(next);
+                
+                stars = game.add.group();
+                stars.enableBody = true;
+                
+                for (var i = 0; i < 12; i++) {
+                    var star = stars.create(i * 70, 0, 'star');
+                    star.body.gravity.y = 300;
+                    star.body.bounce.y = 0.7 + Math.random() * 0.2;
+                }
+                
+                
+                cursors = game.input.keyboard.createCursorKeys();
+                
+                scoreText = game.add.text(10,10, 'score: ' + score);
+            },
+            update: function(){
+                game.physics.arcade.collide(player, platforms);
+                game.physics.arcade.collide(next, platforms);
+                game.physics.arcade.collide(stars, platforms);
+                player.body.velocity.x = 0;
+                if(cursors.up.isDown && player.body.touching.down){
+                    player.body.velocity.y = -350;
+                }
+                if(cursors.left.isDown){
+                    player.body.velocity.x = -250;
+                    player.animations.play('left');
+                }
+                else if(cursors.right.isDown){
+                    player.body.velocity.x = 250;
+                    player.animations.play('right');
+                }
+                else{
+                    player.animations.stop();
+                    player.body.velocity.x = 0;
+                    player.frame = 4;
+                }
+                
+                if(cursors.down.isDown){
+                    player.body.velocity.y = 75; 
+                }
+                
+                game.physics.arcade.overlap(player, next, nextStage1, null, this);
+                
+                game.physics.arcade.overlap(player, stars, collectStar, null, this);
+                
+            },
+        }
+        
+        function nextStage1 (player, nextL) {
+            game.state.start('st2')
+        }
+        
+        function nextStage2 (player, nextL){
+            game.state.start('st1')
+        }
+        
+        function collectStar (player, star) {
+            star.kill();
+            score += 10;
+            scoreText.text = 'Score: ' + score;
+        }
+        
+        var state2 = {
+            preload: function(){
+                game.load.image('sky', 'assets/sky.png');
+                game.load.image('ground', 'assets/platform.png');
+                game.load.image('star', 'assets/star.png');
+                game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+                game.load.image('next', 'assets/diamond.png');
+            },
+            create: function(){
+                game.add.sprite(0,0,'sky');
+                next = game.add.group()
+                var nextL = next.create(750,168, 'next');
+                player = game.add.sprite(500,500,'dude');
+                
+                platforms = game.add.group();
+                platforms.enableBody = true;
+                
+                var ground = platforms.create(0, game.world.height-32, 'ground');
+                ground.scale.setTo(2,1);
+                ground.body.immovable = true;
+                
+                var ledge = platforms.create(450,450, 'ground');
+                ledge.body.immovable = true;
+                var ledge2 = platforms.create(400, 200, 'ground');
+                ledge2.body.immovable = true;
+                var ledge3 = platforms.create(-200, 325, 'ground');
+                ledge3.body.immovable = true;
+                
+                
+                game.physics.startSystem(Phaser.Physics.ARCADE);
+                game.physics.arcade.enable(player);
+                player.body.bounce.y = 0.2;
+                player.body.gravity.y = 300;
+                player.body.collideWorldBounds = true;
+                player.animations.add('left', [0, 1, 2, 3], 10, true);
+                player.animations.add('right', [5, 6, 7, 8], 10, true);
+                next.enableBody = true
+                game.physics.arcade.enable(next);
+                stars = game.add.group();
+                stars.enableBody = true;
+                
+                for (var i = 0; i < 12; i++) {
+                    var star = stars.create(i * 70, 0, 'star');
+                    star.body.gravity.y = 300;
+                    star.body.bounce.y = 0.7 + Math.random() * 0.2;
+                }
+
+                
+                cursors = game.input.keyboard.createCursorKeys();
+                
+                scoreText = game.add.text(10,10, 'score: ' + score);
+            },
+            update: function(){
+                game.physics.arcade.collide(player, platforms);
+                game.physics.arcade.collide(stars, platforms);
+                player.body.velocity.x = 0;
+                if(cursors.up.isDown && player.body.touching.down){
+                    player.body.velocity.y = -350;
+                }
+                if(cursors.left.isDown){
+                    player.body.velocity.x = -250;
+                    player.animations.play('left');
+                }
+                else if(cursors.right.isDown){
+                    player.body.velocity.x = 250;
+                    player.animations.play('right');
+                }
+                else{
+                    player.animations.stop();
+                    player.body.velocity.x = 0;
+                    player.frame = 4;
+                }
+                
+                if(cursors.down.isDown){
+                    player.body.velocity.y = 75;  
+                }
+                
+                game.physics.arcade.overlap(player, next, nextStage2, null, this);
+                
+                game.physics.arcade.overlap(player, stars, collectStar, null, this);
+            },
+        }
+        
+        game.state.add('st1', state1);
+        game.state.add('st2', state2);
+        game.state.start('st1');
+        
+        
+    </script>
+</head>
+<body>
+<div>
+    <h2>Joanna Wu Demo#1</h2>
+</div>
+    
+</body>
+</html>
