@@ -1,47 +1,36 @@
-main_game = function(game) {
-
-};
-
-
-var player1;
-var player2;    
-var cursors;
-var hitboxes1;
-var timer;
-var timerEvent;
-var text;
-
-main_game.prototype = {
-
-    preload: function() {
-    	game.load.image('dojo_bg', '/assets/dojo_background.jpg');
-        game.load.image('dark_bg', '/assets/dark_background.jpg');
-        game.load.image('test', '../assets/hadouken.png');
-        //game.load.spritesheet('ryuStand', 'assets/ryuStand80x111.png', 80, 111);
-        game.load.spritesheet('ryu', '/assets/RyuSpriteMap125x135.png', 125, 135);
-        game.load.spritesheet('enemy', '/assets/enemy.png', 76, 108);
-        game.load.spritesheet('ken', '/assets/ken-sprite-sheet.png', 103, 135);
-    },
+var playState = function(game){
+    var player1;
+    var player2;    
+    var cursors;
+    var hitboxes1;
+    var timer;
+    var timerEvent;
+    var text;
+}
 
 
+
+
+playState.prototype = {
 
     create: function() {
-    	game.physics.startSystem(Phaser.Physics.ARCADE);
-    	game.add.sprite(0,0,'dojo_bg');
+        console.log('play')
+    	this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    	this.game.add.sprite(0,0,'dojo_bg');
         
-        timer = game.time.create();
+        timer = this.game.time.create();
         timerEvent = timer.add(Phaser.Timer.SECOND * 59, endTimer, this);
         
         timer.start();
 
-        player1 = game.add.sprite(500, 400, 'ryu');
-        player2 = game.add.sprite(850, 400, 'ken');
+        player1 = this.game.add.sprite(500, 400, 'ryu');
+        player2 = this.game.add.sprite(850, 400, 'ken');
         player1.scale.setTo(2,2);
         player2.scale.setTo(1.78,1.78);
 
-        game.physics.arcade.enable(player1);
-        game.physics.arcade.enable(player2);
-        game.physics.arcade.collide(player1, player2);
+        this.game.physics.arcade.enable(player1);
+        this.game.physics.arcade.enable(player2);
+        this.game.physics.arcade.collide(player1, player2);
 
         player1.body.bounce.y = 0.2;
         player1.body.gravity.y = 800;
@@ -52,18 +41,18 @@ main_game.prototype = {
 
         player1.body.setSize(85,120,25,25);
 
-        hitboxes1 = game.add.group();
+        hitboxes1 = this.game.add.group();
         hitboxes1.enableBody = true;
         player1.addChild(hitboxes1);
 
-        game.physics.arcade.enable(hitboxes1); // this line must be before the body propety of a hitbox is modified
+        this.game.physics.arcade.enable(hitboxes1); // this line must be before the body propety of a hitbox is modified
 
 
 
-        var hitbox1 = game.make.sprite(37, 50, null); // x pos, y pos, sprite name, all relative to player position 
-        var hitbox2 = game.make.sprite(45, 35, null);
-        var hitbox3 = game.make.sprite(30, 75, null);
-        var hitbox4 = game.make.sprite(60, 75, null);
+        var hitbox1 = this.game.make.sprite(37, 50, null); // x pos, y pos, sprite name, all relative to player position 
+        var hitbox2 = this.game.make.sprite(45, 35, null);
+        var hitbox3 = this.game.make.sprite(30, 75, null);
+        var hitbox4 = this.game.make.sprite(60, 75, null);
 
         hitboxes1.add(hitbox1);
         hitboxes1.add(hitbox2);
@@ -99,7 +88,30 @@ main_game.prototype = {
         player2.animations.add('crouch', [23], 5, true);
         
         
-        cursors = game.input.keyboard.createCursorKeys();
+        cursors = this.game.input.keyboard.createCursorKeys();
+
+        //health bar
+        player1.health = 75;
+        player1.maxHealth = 100;
+        this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
+        this.healthMeterBar.bar(player1, {
+                y: 20, x: 106,
+                width: 300, height: 40,
+                foreground: '#ff0000',
+                background: '#aa0000',
+                alpha: 0.6
+            });
+
+        player2.health = 50;
+        player2.maxHealth = 100;
+        this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
+        this.healthMeterBar.bar(player2, {
+                y: 20, x: 618,
+                width: 300, height: 40,
+                foreground: '#ff0000',
+                background: '#aa0000',
+                alpha: 0.6
+            });
 
     },    
 
@@ -107,14 +119,14 @@ main_game.prototype = {
         player1.body.velocity.x = 0;
         player2.body.velocity.x = 0;
         
-        upButton = game.input.keyboard.addKey(Phaser.Keyboard.W);
-        downButton = game.input.keyboard.addKey(Phaser.Keyboard.S);
-        leftButton = game.input.keyboard.addKey(Phaser.Keyboard.A);
-        rightButton = game.input.keyboard.addKey(Phaser.Keyboard.D);
-        tButton = game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
-        yButton = game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
+        upButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        downButton = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+        rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        tButton = this.game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
+        yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
 
-        game.physics.arcade.overlap(hitboxes1, player2, overlap, null, this);
+        this.game.physics.arcade.overlap(hitboxes1, player2, overlap, null, this);
 
         //player1 controls
         if (cursors.left.isDown && cursors.right.isDown) {
@@ -195,7 +207,7 @@ main_game.prototype = {
         else if (yButton.isDown) {
 
             disableAllHitboxes(); // if Y is pressed down, all hitboxes in hitboxes1 are removed
-            game.state.start("title_screen"); // temporarily lets you go to the title screen
+            this.game.state.start("title_screen"); // temporarily lets you go to the title screen
         }
 
 
@@ -204,10 +216,11 @@ main_game.prototype = {
     render: function() {
         
         if(timer.running) {
-            game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
+            this.game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
         }
         else {
-            game.debug.text("End of Round", 200, 250, "#ffb64d", '100px ScriptoramaMarkdownJF');
+            this.game.debug.text("End of Round", 200, 250, "#ffb64d", '100px ScriptoramaMarkdownJF');
+            //send to endState Winner/loser/sudden death
         }
         
         function formatTime(s) {
@@ -215,14 +228,15 @@ main_game.prototype = {
             var seconds = "0" + (s - minutes * 60);
             return seconds.substr(-2);  
         }
-        
-        game.debug.body(player1);
-        game.debug.body(player2);
+        /*
+        this.game.debug.body(player1);
+        this.game.debug.body(player2);
 
         hitboxes1.forEachExists(function(hitbox) {          
-            game.debug.body(hitbox);     
-        });
+            this.game.debug.body(hitbox);
 
+        });
+        */
     }
 };
 
