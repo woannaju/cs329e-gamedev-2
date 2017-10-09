@@ -26,7 +26,7 @@ playState.prototype = {
         player1 = this.game.add.sprite(500, 400, 'ryu');
         player2 = this.game.add.sprite(850, 400, 'ken');
         player1.scale.setTo(.8,.8);
-        player2.scale.setTo(1.78,1.78);
+        player2.scale.setTo(.8, .8);
 
         this.game.physics.arcade.enable(player1);
         this.game.physics.arcade.enable(player2);
@@ -40,6 +40,7 @@ playState.prototype = {
         player2.body.collideWorldBounds = true;
 
         player1.body.setSize(130,290,10,15);
+        player2.body.setSize(130,290,10,15)
 
         hitboxes1 = this.game.add.group();
         hitboxes1.enableBody = true;
@@ -81,11 +82,17 @@ playState.prototype = {
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player1.animations.add('crouch', [31], 5, true);
         
-        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
-        player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
-        player2.animations.add('forwards', [15, 16, 17, 18, 19], 5, true);
-        player2.animations.add('jump', [25, 27, 28, 29, 30,31,32,33,34], 7, true);
-        player2.animations.add('crouch', [23], 5, true);
+        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
+        player2.animations.add('backwards', [7, 8, 9, 10, 11, 12], 5, true);
+        player2.animations.add('forwards', [13, 14, 15, 16, 17, 18], 5, true);
+        player2.animations.add('jump', [19, 20, 21, 22, 23, 24], 5, true);
+        player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
+        player2.animations.add('crouch', [31], 5, true);
+//        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
+//        player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
+//        player2.animations.add('forwards', [15, 16, 17, 18, 19], 5, true);
+//        player2.animations.add('jump', [25, 27, 28, 29, 30,31,32,33,34], 7, true);
+//        player2.animations.add('crouch', [23], 5, true);
         
         
         cursors = this.game.input.keyboard.createCursorKeys();
