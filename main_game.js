@@ -195,7 +195,7 @@ main_game.prototype = {
         else if (yButton.isDown) {
 
             disableAllHitboxes(); // if Y is pressed down, all hitboxes in hitboxes1 are removed
-            game.state.start("title_screen");
+            game.state.start("title_screen"); // temporarily lets you go to the title screen
         }
 
 
@@ -216,7 +216,7 @@ main_game.prototype = {
             return seconds.substr(-2);  
         }
         
-        // game.debug.body(player1);
+        game.debug.body(player1);
         game.debug.body(player2);
 
         hitboxes1.forEachExists(function(hitbox) {          
