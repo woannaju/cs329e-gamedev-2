@@ -235,14 +235,15 @@ playState.prototype = {
             var seconds = "0" + (s - minutes * 60);
             return seconds.substr(-2);  
         }
+
         this.game.debug.body(player1);
-        /*this.game.debug.body(player2);
-
-        hitboxes1.forEachExists(function(hitbox) {          
-            this.game.debug.body(hitbox);
-
-        });
-        */
+        this.game.debug.body(player2);
+    
+        for(var i = 0; i < hitboxes1.children.length; i++){
+            
+            this.game.debug.body(hitboxes1.children[i]);
+        }
+       
     }
 };
 
