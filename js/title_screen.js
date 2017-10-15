@@ -13,11 +13,11 @@ var title_screen = {
         var style2 = { font: "24px Arial", fill: "#ffffff", align: "center" };
 
 
-        var screenText1 = this.game.add.text(this.game.world.centerX - 40, this.game.world.centerY, '2D Fighting Game', style1);
+        var screenText1 = this.game.add.text(this.game.world.centerX, this.game.world.centerY, '2D Fighting Game', style1);
         screenText1.anchor.set(0.5);
         // screenText1.addColor('#ffff00', 16);
 
-        var screenText2 = this.game.add.text(this.game.world.centerX - 40, this.game.world.centerY + 50, 'Press "S" to play!', style2);
+        var screenText2 = this.game.add.text(this.game.world.centerX , this.game.world.centerY + 50, 'Press "S" to play!', style2);
         screenText2.anchor.set(0.5);
         // screenText2.addColor('#ffff00', 16);
         var startKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);

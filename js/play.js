@@ -2,7 +2,8 @@ var playState = function(game){
     var player1;
     var player2;    
     var cursors;
-    var hitboxes1;
+    var p1_hitboxes;
+    var p2_hitboxes;
     var timer;
     var timerEvent;
     var text;
@@ -16,7 +17,7 @@ playState.prototype = {
     create: function() {
         console.log('play')
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    	this.game.add.sprite(0,0,'dojo_bg');
+    	bg = this.game.add.sprite(70,0,'boxingring');
         
         timer = this.game.time.create();
         timerEvent = timer.add(Phaser.Timer.SECOND * 59, endTimer, this);
@@ -27,53 +28,84 @@ playState.prototype = {
         player2 = this.game.add.sprite(850, 400, 'ken');
         player1.scale.setTo(.8,.8);
         player2.scale.setTo(.8, .8);
+        bg.scale.setTo(0.2,0.2);
 
         this.game.physics.arcade.enable(player1);
         this.game.physics.arcade.enable(player2);
         this.game.physics.arcade.collide(player1, player2);
 
         player1.body.bounce.y = 0.2;
-        player1.body.gravity.y = 800;
+        player1.body.gravity.y = 1000;
         player1.body.collideWorldBounds = true;
         player2.body.bounce.y = 0.2;
-        player2.body.gravity.y = 800;
+        player2.body.gravity.y = 1000;
         player2.body.collideWorldBounds = true;
 
         player1.body.setSize(130,290,10,15);
         player2.body.setSize(130,290,10,15)
 
-        hitboxes1 = this.game.add.group();
-        hitboxes1.enableBody = true;
-        player1.addChild(hitboxes1);
+        
+        //player 1 hitboxes
+        p1_hitboxes = this.game.add.group();
+        p1_hitboxes.enableBody = true;
+        player1.addChild(p1_hitboxes);
+        this.game.physics.arcade.enable(p1_hitboxes); // this line must be before the body propety of a hitbox is modified
+        
+        var hitbox1 = this.game.make.sprite(47, 15, null); // x pos, y pos, sprite name, all relative to player position 
+        var hitbox2 = this.game.make.sprite(37, 89, null);
+        var hitbox3 = this.game.make.sprite(27, 190, null);
+        var hitbox4 = this.game.make.sprite(90, 190, null);
 
-        this.game.physics.arcade.enable(hitboxes1); // this line must be before the body propety of a hitbox is modified
+        p1_hitboxes.add(hitbox1);
+        p1_hitboxes.add(hitbox2);
+        p1_hitboxes.add(hitbox3);
+        p1_hitboxes.add(hitbox4);
 
-
-
-        var hitbox1 = this.game.make.sprite(37, 50, null); // x pos, y pos, sprite name, all relative to player position 
-        var hitbox2 = this.game.make.sprite(45, 35, null);
-        var hitbox3 = this.game.make.sprite(30, 75, null);
-        var hitbox4 = this.game.make.sprite(60, 75, null);
-
-        hitboxes1.add(hitbox1);
-        hitboxes1.add(hitbox2);
-        hitboxes1.add(hitbox3);
-        hitboxes1.add(hitbox4);
-
-        hitbox1.name = 'torso';
-        hitbox2.name = 'head';
+        hitbox1.name = 'head';
+        hitbox2.name = 'torso';
         hitbox3.name = 'left_leg';
         hitbox4.name = 'right_leg';
 
-        hitbox1.body.setSize(85,50,0,0); // size of sprite: width, height, offset width, offset height
-        hitbox2.body.setSize(50,30,0,0);
-        hitbox3.body.setSize(50,110,0,0);
-        hitbox4.body.setSize(50,110,0,0);
+        hitbox1.body.setSize(50,50,0,0); // size of sprite: width, height, offset width, offset height
+        hitbox2.body.setSize(70,87,0,0);
+        hitbox3.body.setSize(35,90,0,0);
+        hitbox4.body.setSize(35,90,0,0);
 
-        hitboxes1.forEachExists(function(hitbox) {   // hitboxes follow player properly by setting sprite.body.moves = false (not same as immovable)
+        p1_hitboxes.forEachExists(function(hitbox) {   // hitboxes follow player properly by setting sprite.body.moves = false (not same as immovable)
             hitbox.body.moves = false;     
         });
+        
+        //player 2 hitboxes
+        p2_hitboxes = this.game.add.group();
+        p2_hitboxes.enableBody = true;
+        player2.addChild(p2_hitboxes);
+        this.game.physics.arcade.enable(p2_hitboxes); // this line must be before the body propety of a hitbox is modified
+        
+        var hitbox1_2 = this.game.make.sprite(47, 15, null); // x pos, y pos, sprite name, all relative to player position 
+        var hitbox2_2 = this.game.make.sprite(37, 89, null);
+        var hitbox3_2 = this.game.make.sprite(27, 190, null);
+        var hitbox4_2 = this.game.make.sprite(90, 190, null);
 
+        p2_hitboxes.add(hitbox1_2);
+        p2_hitboxes.add(hitbox2_2);
+        p2_hitboxes.add(hitbox3_2);
+        p2_hitboxes.add(hitbox4_2);
+
+        hitbox1_2.name = 'head';
+        hitbox2_2.name = 'torso';
+        hitbox3_2.name = 'left_leg';
+        hitbox4_2.name = 'right_leg';
+
+        hitbox1_2.body.setSize(50,50,0,0); // size of sprite: width, height, offset width, offset height
+        hitbox2_2.body.setSize(70,87,0,0);
+        hitbox3_2.body.setSize(35,90,0,0);
+        hitbox4_2.body.setSize(35,90,0,0);
+
+        p2_hitboxes.forEachExists(function(hitbox) {   // hitboxes follow player properly by setting sprite.body.moves = false (not same as immovable)
+            hitbox.body.moves = false;     
+        });
+        
+        this.invincibleTimer = 0;
 
         player1.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
         player1.animations.add('backwards', [7, 8, 9, 10, 11, 12], 5, true);
@@ -100,6 +132,7 @@ playState.prototype = {
         //health bar
         player1.health = 75;
         player1.maxHealth = 100;
+        
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
         this.healthMeterBar.bar(player1, {
                 y: 20, x: 106,
@@ -133,7 +166,7 @@ playState.prototype = {
         tButton = this.game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
         yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
 
-        this.game.physics.arcade.overlap(hitboxes1, player2, overlap, null, this);
+        this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
 
         //player1 controls
         if (cursors.left.isDown && cursors.right.isDown) {
@@ -142,14 +175,14 @@ playState.prototype = {
 
         else if (cursors.left.isDown) {
                 //  Move to the left
-                player1.body.velocity.x = -200;
+                player1.body.velocity.x = -400;
                 if (player1.body.onFloor()) {
                     player1.animations.play('backwards');
                 }
             }
         else if (cursors.right.isDown) {
                 //  Move to the left
-                player1.body.velocity.x = 200;
+                player1.body.velocity.x = 400;
                 if (player1.body.onFloor()) {
                     player1.animations.play('forwards');
                 }
@@ -168,21 +201,24 @@ playState.prototype = {
         }
         if (cursors.up.isDown && player1.body.onFloor()){
                 //  Jump
-                player1.body.velocity.y = -500;
+                player1.body.velocity.y = -550;
                 player1.animations.play('jump');
             }
 
         
         
         //player2 controls
-        if (leftButton.isDown) {
-            player2.body.velocity.x = -150;
+        if (leftButton.isDown && rightButton.isDown) {
+                player2.animations.play('shoruken');
+            }
+        else if (leftButton.isDown) {
+            player2.body.velocity.x = -400;
             if (player2.body.onFloor()) {
                 player2.animations.play('forwards');
             }
         } 
         else if (rightButton.isDown) {
-            player2.body.velocity.x = 150;
+            player2.body.velocity.x = 400;
             if (player2.body.onFloor()) {
                 player2.animations.play('backwards');
             }
@@ -200,12 +236,12 @@ playState.prototype = {
         }
         if (upButton.isDown && player2.body.onFloor()){
                 //  Jump
-                player2.body.velocity.y = -500;
+                player2.body.velocity.y = -550;
                 player2.animations.play('jump');
             }
 
 
-        // Hitboxes1 controls
+        // p1_hitboxes controls
 
         if (tButton.isDown) {
 
@@ -213,8 +249,8 @@ playState.prototype = {
         }
         else if (yButton.isDown) {
 
-            disableAllHitboxes(); // if Y is pressed down, all hitboxes in hitboxes1 are removed
-            this.game.state.start("title_screen"); // temporarily lets you go to the title screen
+            disableAllHitboxes(); // if Y is pressed down, all hitboxes in p1_hitboxes are removed
+            //this.game.state.start("title_screen"); // temporarily lets you go to the title screen
         }
 
 
@@ -236,22 +272,26 @@ playState.prototype = {
             return seconds.substr(-2);  
         }
 
-        this.game.debug.body(player1);
-        this.game.debug.body(player2);
-    
-        for(var i = 0; i < hitboxes1.children.length; i++){
-            
-            this.game.debug.body(hitboxes1.children[i]);
-        }
+//        this.game.debug.body(player1);
+//        this.game.debug.body(player2);
+//    
+//        for(var i = 0; i < p1_hitboxes.children.length; i++){
+//            
+//            this.game.debug.body(p1_hitboxes.children[i]);
+//        }
+//        for(var i = 0; i < p2_hitboxes.children.length; i++){
+//            
+//            this.game.debug.body(p2_hitboxes.children[i]);
+//        }
        
     }
 };
 
 function enableHitbox(hitboxName) {
-    for(var i = 0; i < hitboxes1.children.length; i++){
+    for(var i = 0; i < p1_hitboxes.children.length; i++){
 
-        if(hitboxes1.children[i].name === hitboxName){
-            hitboxes1.children[i].reset(50,30);   // this is the specific location of the head hitbox            
+        if(p1_hitboxes.children[i].name === hitboxName){
+            p1_hitboxes.children[i].reset(50,30);   // this is the specific location of the head hitbox            
 
         }
     }
@@ -259,10 +299,10 @@ function enableHitbox(hitboxName) {
 }
 
 function disableAllHitboxes() {     
-    hitboxes1.forEachExists(function(hitbox) {          
-        hitbox.kill();     
-    });
-    console.log('killed all hitboxes in hitboxes1')
+    for(var i = 0; i < p1_hitboxes.children.length; i++){
+        p1_hitboxes.children[i].kill();
+    }
+    console.log('killed all hitboxes in p1_hitboxes')
 }
 
 function endTimer() {
@@ -271,7 +311,10 @@ function endTimer() {
 
 
 function overlap(player1, player2) {
-
-    player1.kill();
+    if (this.game.time.now > this.invincibleTimer) {
+            player1.health = player1.health -10;
+            this.invincibleTimer = this.game.time.now + 1000;
+        }
+    //player1.health = player1.health -10;
     console.log('killed player 2');
 }
