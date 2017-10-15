@@ -24,8 +24,8 @@ playState.prototype = {
         
         timer.start();
 
-        player1 = this.game.add.sprite(500, 400, 'ryu');
-        player2 = this.game.add.sprite(850, 400, 'ken');
+        player2 = this.game.add.sprite(500, 400, 'ryu');
+        player1 = this.game.add.sprite(850, 400, 'ken');
         player1.scale.setTo(.8,.8);
         player2.scale.setTo(.8, .8);
         bg.scale.setTo(0.2,0.2);
@@ -113,6 +113,7 @@ playState.prototype = {
         player1.animations.add('jump', [19, 20, 21, 22, 23, 24], 5, true);
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player1.animations.add('crouch', [31], 5, true);
+        player1.animations.add('punch', [32, 33, 34, 35, 36], 7,true);
         
         player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
         player2.animations.add('backwards', [7, 8, 9, 10, 11, 12], 5, true);
@@ -120,6 +121,7 @@ playState.prototype = {
         player2.animations.add('jump', [19, 20, 21, 22, 23, 24], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player2.animations.add('crouch', [31], 5, true);
+        player2.animations.add('punch', [32, 33, 34, 35, 36], 7, true);
 //        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
 //        player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
 //        player2.animations.add('forwards', [15, 16, 17, 18, 19], 5, true);
@@ -130,7 +132,7 @@ playState.prototype = {
         cursors = this.game.input.keyboard.createCursorKeys();
 
         //health bar
-        player1.health = 75;
+        player1.health = 100;
         player1.maxHealth = 100;
         
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
@@ -142,7 +144,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        player2.health = 50;
+        player2.health = 100;
         player2.maxHealth = 100;
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
         this.healthMeterBar.bar(player2, {
@@ -165,6 +167,8 @@ playState.prototype = {
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         tButton = this.game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
         yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
+        zButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        qMark = this.game.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK);
 
         this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
 
@@ -192,6 +196,9 @@ playState.prototype = {
                 player1.body.velocity.x = 0;
                 player1.animations.play('crouch');
             }
+        else if(zButton.isDown) {
+            player1.animations.play('punch');
+        }
         else {
             //  Stand still
             if (player1.body.onFloor()) {
@@ -204,6 +211,7 @@ playState.prototype = {
                 player1.body.velocity.y = -550;
                 player1.animations.play('jump');
             }
+        
 
         
         
@@ -229,6 +237,9 @@ playState.prototype = {
             player2.body.velocity.x = 0;
             player2.animations.play('crouch');
         }
+        else if(qMark.isDown) {
+            player2.animations.play('punch');
+        }
         else {
             if (player2.body.onFloor()) {
                 player2.animations.play('idle');
@@ -239,6 +250,7 @@ playState.prototype = {
                 player2.body.velocity.y = -550;
                 player2.animations.play('jump');
             }
+        
 
 
         // p1_hitboxes controls
@@ -291,7 +303,7 @@ function enableHitbox(hitboxName) {
     for(var i = 0; i < p1_hitboxes.children.length; i++){
 
         if(p1_hitboxes.children[i].name === hitboxName){
-            p1_hitboxes.children[i].reset(50,30);   // this is the specific location of the head hitbox            
+            p1_hitboxes.children[i].reset(50,30);   // this is the specific location of the head hitbox ad           
 
         }
     }
