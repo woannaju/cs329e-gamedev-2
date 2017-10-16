@@ -15,8 +15,6 @@ var loadState = {
     create: function()
     {
         console.log('load')
-        music = this.game.add.audio('boden');
-        music.play();
     	this.game.state.start('title_screen')
     },
 };

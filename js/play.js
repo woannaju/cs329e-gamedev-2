@@ -38,7 +38,8 @@ playState.prototype = {
         player2.scale.setTo(.8, .8);
         bg.scale.setTo(0.2,0.2);
 
-        
+        music = this.game.add.audio('boden');
+        music.play();
 
         
 
@@ -440,6 +441,7 @@ function overlap(player1, player2) {
             this.invincibleTimer = this.game.time.now + 500;
         }
     if (player1.health == 0 || player2.health == 0) {
+        music.stop();
         this.game.state.start('end')
     }
     //player1.health = player1.health -10;
