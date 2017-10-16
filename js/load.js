@@ -9,6 +9,7 @@ var loadState = {
         this.game.load.spritesheet('ryu', 'assets/robot_156x316.png', 156, 316);
         //this.game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 103, 135);
         this.game.load.spritesheet('ken', 'assets/robot_enemy_156x316.png', 156, 316);
+        this.game.load.audio('boden', ['assets/audio/bodenstaendig_2000_in_rock_4bit.mp3', 'assets/audio/bodenstaendig_2000_in_rock_4bit.ogg']);
     },
 
     create: function()

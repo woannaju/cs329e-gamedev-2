@@ -14,6 +14,7 @@ var playState = function(game){
     var cpu_ai;
     var p1_anim_punch;
     var p2_anim_punch;
+    var music;
 }
 
 
@@ -36,6 +37,11 @@ playState.prototype = {
         player1.scale.setTo(.8,.8);
         player2.scale.setTo(.8, .8);
         bg.scale.setTo(0.2,0.2);
+
+        music = this.game.add.audio('boden');
+        music.play();
+
+        
 
         this.game.physics.arcade.enable(player1);
         this.game.physics.arcade.enable(player2);
