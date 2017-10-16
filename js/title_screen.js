@@ -20,6 +20,10 @@ var title_screen = {
         var screenText2 = this.game.add.text(this.game.world.centerX , this.game.world.centerY + 50, 'Press "S" to play!', style2);
         screenText2.anchor.set(0.5);
         // screenText2.addColor('#ffff00', 16);
+
+        this.game.loading_music = this.game.add.audio('menu_music')
+        this.game.loading_music.play();
+
         var startKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
 
         startKey.onDown.addOnce(this.start, this);
