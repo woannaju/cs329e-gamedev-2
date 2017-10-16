@@ -38,8 +38,7 @@ playState.prototype = {
         player2.scale.setTo(.8, .8);
         bg.scale.setTo(0.2,0.2);
 
-        music = this.game.add.audio('boden');
-        music.play();
+        
 
         
 
