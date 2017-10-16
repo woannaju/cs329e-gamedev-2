@@ -227,6 +227,7 @@ playState.prototype = {
 
         // this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
         this.game.physics.arcade.overlap(p1_attack_hitboxes, player2, overlap, null, this);
+        this.game.physics.arcade.overlap(p2_attack_hitboxes, player1, overlap, null, this);
 
         //player1 controls
         if (cursors.left.isDown && cursors.right.isDown) {
