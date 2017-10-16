@@ -10,6 +10,7 @@
     <script  type="text/javascript" src="js/load.js"></script>
     <script  type="text/javascript" src="js/title_screen.js"></script>
     <script  type="text/javascript" src="js/play.js"></script>
+    <script  type="text/javascript" src="js/end_screen.js"></script>
     
 
     <script>
@@ -20,7 +21,7 @@
         game.state.add('boot', bootState);
         game.state.add('load', loadState);
         game.state.add('play', playState);
-        //game.state.add('end', endState);
+        game.state.add('end', end_screen);
         console.log('index')
 
         game.state.start('boot');

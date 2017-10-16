@@ -191,7 +191,7 @@ playState.prototype = {
         
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
         this.healthMeterBar.bar(player1, {
-                y: 20, x: 106,
+                y: 20, x: 618,
                 width: 300, height: 40,
                 foreground: '#ff0000',
                 background: '#aa0000',
@@ -202,7 +202,7 @@ playState.prototype = {
         player2.maxHealth = 100;
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
         this.healthMeterBar.bar(player2, {
-                y: 20, x: 618,
+                y: 20, x: 106,
                 width: 300, height: 40,
                 foreground: '#ff0000',
                 background: '#aa0000',
@@ -222,7 +222,7 @@ playState.prototype = {
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         tButton = this.game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
         yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
-        zButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        eButton = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
         qMark = this.game.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK);
 
         // this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
@@ -253,7 +253,7 @@ playState.prototype = {
                 player1.body.velocity.x = 0;
                 player1.animations.play('crouch');
             }
-        else if(zButton.isDown) {
+        else if(qMark.isDown) {
             player1.animations.play('punch');
         }
         else {
@@ -321,7 +321,7 @@ playState.prototype = {
                 player2.body.velocity.x = 0;
                 player2.animations.play('crouch');
             }
-            else if(qMark.isDown) {
+            else if(eButton.isDown) {
                 player2.animations.play('punch');
             }
             else {
@@ -432,8 +432,11 @@ function endTimer() {
 function overlap(player1, player2) {
     if (this.game.time.now > this.invincibleTimer) {
             player1.health = player1.health -10;
-            this.invincibleTimer = this.game.time.now + 1000;
+            this.invincibleTimer = this.game.time.now + 500;
         }
+    if (player1.health == 0 || player2.health == 0) {
+        this.game.state.start('end')
+    }
     //player1.health = player1.health -10;
     console.log('hit player 2');
 }

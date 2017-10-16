@@ -2,6 +2,7 @@ var loadState = {
 
     preload: function() {
     	this.game.load.image('dojo_bg', 'assets/dojo_background.jpg');
+        this.game.load.image('solid_bg', 'assets/solid_bg.jpg');
         this.game.load.image('dark_bg', 'assets/dark_background.jpg');
         this.game.load.image('boxingring', 'assets/boxingring_bg.jpeg');
         //this.game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
