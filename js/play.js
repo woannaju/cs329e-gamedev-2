@@ -165,6 +165,7 @@ playState.prototype = {
         });
 
         this.invincibleTimer = 0;
+        this.cpuTimer = 0;
 
         player1.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
         player1.animations.add('backwards', [7, 8, 9, 10, 11, 12], 5, true);
@@ -217,7 +218,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        cpu_ai = false; // boolean that determines if cpu ai takes over player 2 or not
+        cpu_ai = true; // boolean that determines if cpu ai takes over player 2 or not
     },    
 
     update: function() {
@@ -228,8 +229,8 @@ playState.prototype = {
         downButton = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
         leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-        tButton = this.game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
-        yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
+        // tButton = this.game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
+        // yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
         eButton = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
         qMark = this.game.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK);
 
@@ -286,18 +287,60 @@ playState.prototype = {
         }
 
         
-        // enemy ai   
+        // enemy cpu ai   
         if (cpu_ai == true) {
 
-            if (Math.round(player1.y == Math.round(player2.y))) {
+            var back_away = true;
+            if (this.game.time.now > this.cpuTimer) { // back away if not enough time has passed between attacks
+                back_away = false;
+            }
+
+            if (Math.round(player1.y == Math.round(player2.y))) { // on same vertical (y) plane
 
                 var delta_x = player2.x - player1.x;
-                if (delta_x < 0) { // player 1 is behind player 2
+
+                if (back_away == true) { // back away from player 
+
+                    if (delta_x < 0 & { // player 1 is behind player 2 
+                        player2.body.velocity.x = 300;
+                        if (player2.body.onFloor()) {
+                            player2.animations.play('backwards');
+                        }
+                    } 
+                    else {
+                        player2.body.velocity.x = -300;
+                        if (player2.body.onFloor()) {
+                            player2.animations.play('forwards');
+                        }
+                    }
+                }
+                // ready to attack again
+                else if (delta_x >= -50 && delta_x <= 0) { // in range for punch attack
+                    
+                    if (!back_away) { // enough time has passed between attacks
+
+                        if (Math.random() < 0.25) // 25% chance that cpu will do punch attack
+                        {
+                            player2.body.velocity.x = 0;
+                            player2.animations.play('punch');
+                            this.cpuTimer = this.game.time.now + 500;
+
+                        }
+                        else {                      // if fail to punch, then move away
+                            console.log('failure to punch')
+                        }
+                    }
+                    else { // not enough time has passed to attack again, so back away
+                        console.log('backing away')
+                    }   
+                }
+                else if (delta_x < 0) { // player 1 is behind player 2 
                     player2.body.velocity.x = 300;
                     if (player2.body.onFloor()) {
                         player2.animations.play('backwards');
                     }
-                } else {
+                } 
+                else {
                     player2.body.velocity.x = -300;
                     if (player2.body.onFloor()) {
                         player2.animations.play('forwards');
@@ -352,15 +395,15 @@ playState.prototype = {
 
         // p1_hitboxes controls
 
-        if (tButton.isDown) {
+        // if (tButton.isDown) {
 
-            enableHitbox('head'); // if T is pressed down, the head hitbox is reenabled
-        }
-        else if (yButton.isDown) {
+        //     enableHitbox('head'); // if T is pressed down, the head hitbox is reenabled
+        // }
+        // else if (yButton.isDown) {
 
-            disableAllHitboxes(); // if Y is pressed down, all hitboxes in p1_hitboxes are removed
-            //this.game.state.start("title_screen"); // temporarily lets you go to the title screen
-        }
+        //     disableAllHitboxes(); // if Y is pressed down, all hitboxes in p1_hitboxes are removed
+        //     //this.game.state.start("title_screen"); // temporarily lets you go to the title screen
+        // }
 
 
     },
