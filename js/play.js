@@ -170,7 +170,8 @@ playState.prototype = {
         player1.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
         player1.animations.add('backwards', [7, 8, 9, 10, 11, 12], 5, true);
         player1.animations.add('forwards', [13, 14, 15, 16, 17, 18], 5, true);
-        player1.animations.add('jump', [19, 20, 21, 22, 23, 24], 5, true);
+        player1.animations.add('jumpleft', [19, 20, 21, 22, 23, 24], 5, true);
+        player1.animations.add('jumpright', [38, 39, 40, 41, 42, 43], 5, true);
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player1.animations.add('crouch', [31], 5, true);
         p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 35, 36], 7,true);
@@ -178,7 +179,8 @@ playState.prototype = {
         player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
         player2.animations.add('backwards', [7, 8, 9, 10, 11, 12], 5, true);
         player2.animations.add('forwards', [13, 14, 15, 16, 17, 18], 5, true);
-        player2.animations.add('jump', [19, 20, 21, 22, 23, 24], 5, true);
+        player2.animations.add('jumpright', [19, 20, 21, 22, 23, 24], 5, true);
+        player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player2.animations.add('crouch', [31], 5, true);
         p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 35, 36], 7, true);
@@ -274,9 +276,15 @@ playState.prototype = {
         }
         if (cursors.up.isDown && player1.body.onFloor()){
                 //  Jump
+            if(cursors.right.isDown) {
                 player1.body.velocity.y = -550;
-                player1.animations.play('jump');
+                player1.animations.play('jumpright');
             }
+            else {
+                player1.body.velocity.y = -550;
+                player1.animations.play('jumpleft');
+            }
+        }
         
 
         // p1 animation callbacks
@@ -382,8 +390,14 @@ playState.prototype = {
             }
             if (upButton.isDown && player2.body.onFloor()){
                     //  Jump
+                if (leftButton.isDown){
                     player2.body.velocity.y = -550;
-                    player2.animations.play('jump');
+                    player2.animations.play('jumpleft');
+                }
+                else {
+                    player2.body.velocity.y = -550;
+                    player2.animations.play('jumpright');
+                }
             }
         }
 
