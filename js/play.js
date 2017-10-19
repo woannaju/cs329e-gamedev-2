@@ -218,7 +218,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        cpu_ai = true; // boolean that determines if cpu ai takes over player 2 or not
+        cpu_ai = false; // boolean that determines if cpu ai takes over player 2 or not
     },    
 
     update: function() {
@@ -301,7 +301,7 @@ playState.prototype = {
 
                 if (back_away == true) { // back away from player 
 
-                    if (delta_x < 0 & { // player 1 is behind player 2 
+                    if (delta_x < 0) { // player 1 is behind player 2 
                         player2.body.velocity.x = 300;
                         if (player2.body.onFloor()) {
                             player2.animations.play('backwards');
@@ -334,12 +334,12 @@ playState.prototype = {
                         console.log('backing away')
                     }   
                 }
-                else if (delta_x < 0) { // player 1 is behind player 2 
+                else if (delta_x < 0) {
                     player2.body.velocity.x = 300;
                     if (player2.body.onFloor()) {
                         player2.animations.play('backwards');
                     }
-                } 
+                }
                 else {
                     player2.body.velocity.x = -300;
                     if (player2.body.onFloor()) {
