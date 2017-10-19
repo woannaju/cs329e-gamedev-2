@@ -221,6 +221,7 @@ playState.prototype = {
             });
 
         cpu_ai = false; // boolean that determines if cpu ai takes over player 2 or not
+        move_backwards = false;
     },    
 
     update: function() {
@@ -298,24 +299,29 @@ playState.prototype = {
         // enemy cpu ai   
         if (cpu_ai == true) {
 
-            var back_away = true;
-            if (this.game.time.now > this.cpuTimer) { // back away if not enough time has passed between attacks
+            if (this.game.time.now < this.cpuTimer) { // back away if not enough time has passed between attacks
+                back_away = true;
+            }
+            else {
                 back_away = false;
+                move_backwards = Math.random() < 0.50 ? true : false; // 50% chance commit to moving backward or forward after hitting player
             }
 
             if (Math.round(player1.y == Math.round(player2.y))) { // on same vertical (y) plane
 
                 var delta_x = player2.x - player1.x;
 
-                if (back_away == true) { // back away from player 
+                if (back_away) { // back away from player 
+                  
+                    if (move_backwards) { // commit to moving backwards when backing away
 
-                    if (delta_x < 0) { // player 1 is behind player 2 
                         player2.body.velocity.x = 300;
                         if (player2.body.onFloor()) {
                             player2.animations.play('backwards');
                         }
                     } 
                     else {
+
                         player2.body.velocity.x = -300;
                         if (player2.body.onFloor()) {
                             player2.animations.play('forwards');
@@ -331,24 +337,28 @@ playState.prototype = {
                         {
                             player2.body.velocity.x = 0;
                             player2.animations.play('punch');
-                            this.cpuTimer = this.game.time.now + 500;
+                            this.cpuTimer = this.game.time.now + 500; // cpu will back away
 
                         }
-                        else {                      // if fail to punch, then move away
+                        else {                      // fail to punch
                             console.log('failure to punch')
                         }
+
+
                     }
                     else { // not enough time has passed to attack again, so back away
-                        console.log('backing away')
+                        // console.log('backing away')
                     }   
                 }
                 else if (delta_x < 0) {
+
                     player2.body.velocity.x = 300;
                     if (player2.body.onFloor()) {
                         player2.animations.play('backwards');
                     }
                 }
                 else {
+
                     player2.body.velocity.x = -300;
                     if (player2.body.onFloor()) {
                         player2.animations.play('forwards');
