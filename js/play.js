@@ -12,12 +12,12 @@ var playState = function(game){
     var timerEvent;
     var text;
     var cpu_ai;
-    var p1_anim_punch;
-    var p2_anim_punch;
     var music;
 }
 
-
+//javascript global vars
+var p1_attack_anim_list = [];   // list of attack animations for p1
+var p2_attack_anim_list = [];   // list of attack animations for p2
 
 
 playState.prototype = {
@@ -174,8 +174,11 @@ playState.prototype = {
         player1.animations.add('jumpright', [38, 39, 40, 41, 42, 43], 5, true);
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player1.animations.add('crouch', [31], 5, true);
-        p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 35, 36], 7,true);
+        var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 35, 36], 10, false);
         
+        p1_attack_anim_list.push(p1_anim_punch); // add the rest of p1's attacks here
+
+
         player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
         player2.animations.add('backwards', [7, 8, 9, 10, 11, 12], 5, true);
         player2.animations.add('forwards', [13, 14, 15, 16, 17, 18], 5, true);
@@ -183,7 +186,10 @@ playState.prototype = {
         player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player2.animations.add('crouch', [31], 5, true);
-        p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 35, 36], 7, true);
+        var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 35, 36], 10, false);
+        
+        p2_attack_anim_list.push(p2_anim_punch); // add the rest of p2's attacks here
+
 //        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
 //        player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
 //        player2.animations.add('forwards', [15, 16, 17, 18, 19], 5, true);
@@ -220,7 +226,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        cpu_ai = false; // boolean that determines if cpu ai takes over player 2 or not
+        cpu_ai = true; // boolean that determines if cpu ai takes over player 2 or not
         move_backwards = false;
     },    
 
@@ -270,7 +276,10 @@ playState.prototype = {
         }
         else {
             //  Stand still
-            if (player1.body.onFloor()) {
+
+            var p1_attack_isPlaying = isAttackAnimPlaying(p1_attack_anim_list); // checks if any attack animations are playing for p1
+
+            if (player1.body.onFloor() && !p1_attack_isPlaying) {
                 player1.animations.play('idle');
             }
             //player.frame = 2;
@@ -287,12 +296,13 @@ playState.prototype = {
             }
         }
         
+        // p1 attack animation callbacks
+        for(var i = 0; i < p1_attack_anim_list.length; i++) {
 
-        // p1 animation callbacks
+            if (!p1_attack_anim_list[i].isPlaying) {
 
-        if (!p1_anim_punch.isPlaying) {
-
-            attackAnimStarted(player1, p1_anim_punch);
+                attackAnimStarted(player1, p1_attack_anim_list[i])
+            }
         }
 
         
@@ -394,7 +404,10 @@ playState.prototype = {
                 player2.animations.play('punch');
             }
             else {
-                if (player2.body.onFloor()) {
+
+                var p2_attack_isPlaying = isAttackAnimPlaying(p2_attack_anim_list); // checks if any attack animations are playing for p2
+
+                if (player2.body.onFloor() && !p2_attack_isPlaying) {
                     player2.animations.play('idle');
                 }
             }
@@ -411,9 +424,13 @@ playState.prototype = {
             }
         }
 
-        if (!p2_anim_punch.isPlaying) {
+        // p2 attack animation callbacks
+        for(var i = 0; i < p2_attack_anim_list.length; i++) {
 
-            attackAnimStarted(player2, p2_anim_punch);
+            if (!p2_attack_anim_list[i].isPlaying) {
+
+                attackAnimStarted(player2, p2_attack_anim_list[i])
+            }
         }
 
 
@@ -448,17 +465,17 @@ playState.prototype = {
             return seconds.substr(-2);  
         }
 
-//        this.game.debug.body(player1);
-//        this.game.debug.body(player2);
-//    
-//        for(var i = 0; i < p1_hitboxes.children.length; i++){
-//            
-//            this.game.debug.body(p1_hitboxes.children[i]);
-//        }
-//        for(var i = 0; i < p2_hitboxes.children.length; i++){
-//            
-//            this.game.debug.body(p2_hitboxes.children[i]);
-//        }
+       // this.game.debug.body(player1);
+       // this.game.debug.body(player2);
+   
+       // for(var i = 0; i < p1_hitboxes.children.length; i++){
+           
+       //     this.game.debug.body(p1_hitboxes.children[i]);
+       // }
+       // for(var i = 0; i < p2_hitboxes.children.length; i++){
+           
+       //     this.game.debug.body(p2_hitboxes.children[i]);
+       // }
 
         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
            
@@ -558,3 +575,14 @@ function attackAnimEnded(sprite, animation) {
     disableAllHitboxes(hitboxName,hitboxGroup)
 }
 
+// determine if attack animation is playing for a player
+function isAttackAnimPlaying(attack_anim_list) {
+    for(var i = 0; i < attack_anim_list.length; i++) {
+
+        if (attack_anim_list[i].isPlaying) {
+
+            return true;
+        }
+    }
+    return false;
+}
