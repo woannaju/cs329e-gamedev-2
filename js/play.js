@@ -74,10 +74,10 @@ playState.prototype = {
                                         punch_y: 89,
                                      };
         
-        var hitbox1 = this.game.make.sprite(47, 15, null); // x pos, y pos, sprite name, all relative to player position 
-        var hitbox2 = this.game.make.sprite(37, 89, null);
-        var hitbox3 = this.game.make.sprite(27, 190, null);
-        var hitbox4 = this.game.make.sprite(90, 190, null);
+        var hitbox1 = this.game.make.sprite(67, 15, null); // x pos, y pos, sprite name, all relative to player position 
+        var hitbox2 = this.game.make.sprite(57, 89, null);
+        var hitbox3 = this.game.make.sprite(47, 190, null);
+        var hitbox4 = this.game.make.sprite(110, 190, null);
 
         var punch_hitbox = this.game.make.sprite(p1_attack_hitbox_locations.punch_x, p1_attack_hitbox_locations.punch_y, null);
 
@@ -126,10 +126,10 @@ playState.prototype = {
                                         punch_y: 89,
                                      };
 
-        var hitbox1_2 = this.game.make.sprite(47, 15, null); // x pos, y pos, sprite name, all relative to player position 
-        var hitbox2_2 = this.game.make.sprite(37, 89, null);
-        var hitbox3_2 = this.game.make.sprite(27, 190, null);
-        var hitbox4_2 = this.game.make.sprite(90, 190, null);
+        var hitbox1_2 = this.game.make.sprite(67, 15, null); // x pos, y pos, sprite name, all relative to player position 
+        var hitbox2_2 = this.game.make.sprite(57, 89, null);
+        var hitbox3_2 = this.game.make.sprite(47, 190, null);
+        var hitbox4_2 = this.game.make.sprite(110, 190, null);
 
         var punch_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
 
@@ -174,7 +174,7 @@ playState.prototype = {
         player1.animations.add('jumpright', [38, 39, 40, 41, 42, 43], 5, true);
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player1.animations.add('crouch', [31], 5, true);
-        var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 35, 36], 10, false);
+        var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         
         p1_attack_anim_list.push(p1_anim_punch); // add the rest of p1's attacks here
 
@@ -186,7 +186,7 @@ playState.prototype = {
         player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
         player2.animations.add('crouch', [31], 5, true);
-        var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 35, 36], 10, false);
+        var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         
         p2_attack_anim_list.push(p2_anim_punch); // add the rest of p2's attacks here
 
@@ -226,7 +226,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        cpu_ai = true; // boolean that determines if cpu ai takes over player 2 or not
+        cpu_ai = false; // boolean that determines if cpu ai takes over player 2 or not
         move_backwards = false;
     },    
 
@@ -468,14 +468,14 @@ playState.prototype = {
        // this.game.debug.body(player1);
        // this.game.debug.body(player2);
    
-       // for(var i = 0; i < p1_hitboxes.children.length; i++){
+        for(var i = 0; i < p1_hitboxes.children.length; i++){
            
-       //     this.game.debug.body(p1_hitboxes.children[i]);
-       // }
-       // for(var i = 0; i < p2_hitboxes.children.length; i++){
+            this.game.debug.body(p1_hitboxes.children[i]);
+        }
+        for(var i = 0; i < p2_hitboxes.children.length; i++){
            
-       //     this.game.debug.body(p2_hitboxes.children[i]);
-       // }
+            this.game.debug.body(p2_hitboxes.children[i]);
+        }
 
         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
            

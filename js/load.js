@@ -6,9 +6,9 @@ var loadState = {
         this.game.load.image('dark_bg', 'assets/dark_background.jpg');
         this.game.load.image('boxingring', 'assets/boxingring_bg.jpeg');
         //this.game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
-        this.game.load.spritesheet('ryu', 'assets/robot_156x316.png', 156, 316);
+        this.game.load.spritesheet('ryu', 'assets/robot_200x316.png', 200, 316);
         //this.game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 103, 135);
-        this.game.load.spritesheet('ken', 'assets/robot_enemy_156x316.png', 156, 316);
+        this.game.load.spritesheet('ken', 'assets/robot_enemy_200x316.png', 200, 316);
         this.game.load.audio('boden', ['assets/audio/bodenstaendig_2000_in_rock_4bit.mp3', 'assets/audio/bodenstaendig_2000_in_rock_4bit.ogg']);
         this.game.load.audio('menu_music', ['assets/audio/oedipus_wizball_highscore.mp3', 'assets/audio/oedipus_wizball_highscore.ogg']);
     },
