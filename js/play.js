@@ -74,8 +74,8 @@ playState.prototype = {
                                         punch_y: 89,
                                         kickright_x: 90,
                                         kickright_y: 89,
-                                        kickleft_x: -10,
-                                        kickleft_y: 100,
+                                        kickleft_x: -20,
+                                        kickleft_y: 150,
                                      };
         
         var hitbox1 = this.game.make.sprite(67, 15, null); // x pos, y pos, sprite name, all relative to player position 
@@ -137,8 +137,8 @@ playState.prototype = {
         
         p2_attack_hitbox_locations = {  punch_x: 90,
                                         punch_y: 89,
-                                        kickright_x: 90,
-                                        kickright_y: 89,
+                                        kickright_x: 150,
+                                        kickright_y: 150,
                                      };
 
         var hitbox1_2 = this.game.make.sprite(67, 15, null); // x pos, y pos, sprite name, all relative to player position 
@@ -147,7 +147,7 @@ playState.prototype = {
         var hitbox4_2 = this.game.make.sprite(110, 190, null);
 
         var punch_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
-        var kickright_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
+        var kickright_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.kickright_x, p2_attack_hitbox_locations.kickright_y, null);
 
 
         p2_hitboxes.add(hitbox1_2);
@@ -196,8 +196,8 @@ playState.prototype = {
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         player1.animations.add('crouch', [31], 5, true);
         var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
-        var p1_anim_kickleft = player1.animations.add('kickleft', [44, 45, 46, 47], 4, false);
-        var p1_anim_kickright = player1.animations.add('kickright', [54, 55, 56, 57], 4, false);
+        var p1_anim_kickleft = player1.animations.add('kickleft', [44, 45, 46, 47], 10, false);
+        var p1_anim_kickright = player1.animations.add('kickright', [54, 55, 56, 57], 10, false);
 
         p1_attack_anim_list.push(p1_anim_punch); // add the rest of p1's attacks here
         p1_attack_anim_list.push(p1_anim_kickleft);
@@ -211,8 +211,8 @@ playState.prototype = {
         player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         player2.animations.add('crouch', [31], 5, true);
-        var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 4, false);
-        var p2_anim_kickright = player2.animations.add('kickright', [45, 46, 47, 48], 4, false);
+        var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
+        var p2_anim_kickright = player2.animations.add('kickright', [44, 45, 46, 47], 10, false);
         
         p2_attack_anim_list.push(p2_anim_punch); // add the rest of p2's attacks here
         p2_attack_anim_list.push(p2_anim_kickright);
