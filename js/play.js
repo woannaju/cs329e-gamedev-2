@@ -72,6 +72,10 @@ playState.prototype = {
 
         p1_attack_hitbox_locations = {  punch_x: -10,
                                         punch_y: 89,
+                                        kickright_x: 90,
+                                        kickright_y: 89,
+                                        kickleft_x: -10,
+                                        kickleft_y: 100,
                                      };
         
         var hitbox1 = this.game.make.sprite(67, 15, null); // x pos, y pos, sprite name, all relative to player position 
@@ -80,6 +84,9 @@ playState.prototype = {
         var hitbox4 = this.game.make.sprite(110, 190, null);
 
         var punch_hitbox = this.game.make.sprite(p1_attack_hitbox_locations.punch_x, p1_attack_hitbox_locations.punch_y, null);
+        var kickright_hitbox = this.game.make.sprite(p1_attack_hitbox_locations.kickright_x, p1_attack_hitbox_locations.kickright_y, null);
+        var kickleft_hitbox = this.game.make.sprite(p1_attack_hitbox_locations.kickleft_x, p1_attack_hitbox_locations.kickleft_y, null);
+
 
         p1_hitboxes.add(hitbox1);
         p1_hitboxes.add(hitbox2);
@@ -87,6 +94,8 @@ playState.prototype = {
         p1_hitboxes.add(hitbox4);
 
         p1_attack_hitboxes.add(punch_hitbox);
+        p1_attack_hitboxes.add(kickright_hitbox);
+        p1_attack_hitboxes.add(kickleft_hitbox);
 
         hitbox1.name = 'head';
         hitbox2.name = 'torso';
@@ -94,6 +103,8 @@ playState.prototype = {
         hitbox4.name = 'right_leg';
 
         punch_hitbox.name = 'punch';
+        kickright_hitbox.name = 'kickright';
+        kickleft_hitbox.name = 'kickleft';
 
         hitbox1.body.setSize(50,50,0,0); // size of sprite: width, height, offset width, offset height
         hitbox2.body.setSize(70,87,0,0);
@@ -101,6 +112,8 @@ playState.prototype = {
         hitbox4.body.setSize(35,90,0,0);
 
         punch_hitbox.body.setSize(50,20,0,0);
+        kickright_hitbox.body.setSize(50,20,0,0);
+        kickleft_hitbox.body.setSize(50,20,0,0);
 
         p1_hitboxes.forEachExists(function(hitbox) {   // hitboxes follow player properly by setting sprite.body.moves = false (not same as immovable)
             hitbox.body.moves = false;     
@@ -124,6 +137,8 @@ playState.prototype = {
         
         p2_attack_hitbox_locations = {  punch_x: 90,
                                         punch_y: 89,
+                                        kickright_x: 90,
+                                        kickright_y: 89,
                                      };
 
         var hitbox1_2 = this.game.make.sprite(67, 15, null); // x pos, y pos, sprite name, all relative to player position 
@@ -132,6 +147,8 @@ playState.prototype = {
         var hitbox4_2 = this.game.make.sprite(110, 190, null);
 
         var punch_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
+        var kickright_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
+
 
         p2_hitboxes.add(hitbox1_2);
         p2_hitboxes.add(hitbox2_2);
@@ -139,6 +156,7 @@ playState.prototype = {
         p2_hitboxes.add(hitbox4_2);
 
         p2_attack_hitboxes.add(punch_hitbox_2);
+        p2_attack_hitboxes.add(kickright_hitbox_2);
 
         hitbox1_2.name = 'head';
         hitbox2_2.name = 'torso';
@@ -146,6 +164,7 @@ playState.prototype = {
         hitbox4_2.name = 'right_leg';
 
         punch_hitbox_2.name = 'punch';
+        kickright_hitbox_2.name = 'kickright'
 
         hitbox1_2.body.setSize(50,50,0,0); // size of sprite: width, height, offset width, offset height
         hitbox2_2.body.setSize(70,87,0,0);
@@ -153,6 +172,8 @@ playState.prototype = {
         hitbox4_2.body.setSize(35,90,0,0);
 
         punch_hitbox_2.body.setSize(50,20,0,0);
+        kickright_hitbox_2.body.setSize(50,20,0,0);
+
 
         p2_hitboxes.forEachExists(function(hitbox) {   // hitboxes follow player properly by setting sprite.body.moves = false (not same as immovable)
             hitbox.body.moves = false;     
@@ -172,11 +193,15 @@ playState.prototype = {
         player1.animations.add('forwards', [13, 14, 15, 16, 17, 18], 5, true);
         player1.animations.add('jumpleft', [19, 20, 21, 22, 23, 24], 5, true);
         player1.animations.add('jumpright', [38, 39, 40, 41, 42, 43], 5, true);
-        player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
+        player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         player1.animations.add('crouch', [31], 5, true);
         var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
-        
+        var p1_anim_kickleft = player1.animations.add('kickleft', [44, 45, 46, 47], 4, false);
+        var p1_anim_kickright = player1.animations.add('kickright', [54, 55, 56, 57], 4, false);
+
         p1_attack_anim_list.push(p1_anim_punch); // add the rest of p1's attacks here
+        p1_attack_anim_list.push(p1_anim_kickleft);
+        p1_attack_anim_list.push(p1_anim_kickright);
 
 
         player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
@@ -184,11 +209,13 @@ playState.prototype = {
         player2.animations.add('forwards', [13, 14, 15, 16, 17, 18], 5, true);
         player2.animations.add('jumpright', [19, 20, 21, 22, 23, 24], 5, true);
         player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
-        player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, true);
+        player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         player2.animations.add('crouch', [31], 5, true);
-        var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
+        var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 4, false);
+        var p2_anim_kickright = player2.animations.add('kickright', [45, 46, 47, 48], 4, false);
         
         p2_attack_anim_list.push(p2_anim_punch); // add the rest of p2's attacks here
+        p2_attack_anim_list.push(p2_anim_kickright);
 
 //        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
 //        player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
@@ -242,6 +269,8 @@ playState.prototype = {
         // yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
         eButton = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
         qMark = this.game.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK);
+        peButton = this.game.input.keyboard.addKey(Phaser.Keyboard.PERIOD);
+        qButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
 
         // this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
         this.game.physics.arcade.overlap(p1_attack_hitboxes, player2, overlap, null, this);
@@ -271,9 +300,15 @@ playState.prototype = {
                 player1.body.velocity.x = 0;
                 player1.animations.play('crouch');
             }
-        else if(qMark.isDown) {
+        else if (qMark.isDown) {
             player1.animations.play('punch');
         }
+        else if (peButton.isDown) {
+            player1.animations.play('kickleft');
+        }
+        // else if (peButton.isDown && cursors.right.isDown) {
+        //     player1.animatinos.play('kickright');
+        // }
         else {
             //  Stand still
 
@@ -400,8 +435,11 @@ playState.prototype = {
                 player2.body.velocity.x = 0;
                 player2.animations.play('crouch');
             }
-            else if(eButton.isDown) {
+            else if (eButton.isDown) {
                 player2.animations.play('punch');
+            }
+            else if (qButton.isDown) {
+                player2.animations.play('kickright');
             }
             else {
 
@@ -411,6 +449,7 @@ playState.prototype = {
                     player2.animations.play('idle');
                 }
             }
+
             if (upButton.isDown && player2.body.onFloor()){
                     //  Jump
                 if (leftButton.isDown){
@@ -501,7 +540,7 @@ function enableAllHitboxes(hitboxName, hitboxGroup, hitboxGroupLocations) {
             hitboxGroup.children[i].reset(x_pos, y_pos);
         }
     }
-    // console.log('enabled hitboxes for ' + hitboxName);
+    console.log('enabled hitboxes for ' + hitboxName);
 }
 
 function disableAllHitboxes(hitboxName, hitboxGroup) {     
@@ -513,7 +552,7 @@ function disableAllHitboxes(hitboxName, hitboxGroup) {
             // console.log('killed some child');
         }
     }
-    // console.log('killed all hitboxes for ' + hitboxName);
+    console.log('killed all hitboxes for ' + hitboxName);
 }
 
 function endTimer() {
@@ -544,12 +583,16 @@ function attackAnimStarted(sprite, animation) {
         var hitboxGroup = p2_attack_hitboxes;
         var hitboxGroupLocations = p2_attack_hitbox_locations;
     }
-    if (animation.name == 'punch') {
-        var hitboxName = 'punch';
-    }
-    else {
-        // for future attacks
-    }
+    // if (animation.name == 'punch') {
+    //     var hitboxName = 'punch';
+    // }
+    // else {
+    //     // for future attacks
+
+    // }
+
+    var hitboxName = animation.name;
+    // console.log(hitboxName);
     // console.log('punch anim started');
     enableAllHitboxes(hitboxName,hitboxGroup,hitboxGroupLocations);
 }
@@ -570,6 +613,7 @@ function attackAnimEnded(sprite, animation) {
     else {
         // for future attacks
     }
+    var hitboxName = animation.name;
     // console.log('punch anim ended');
 
     disableAllHitboxes(hitboxName,hitboxGroup)
