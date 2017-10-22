@@ -22,6 +22,21 @@ var p2_attack_anim_list = [];   // list of attack animations for p2
 
 playState.prototype = {
 
+    init: function() {
+
+        upButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        downButton = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+        rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        // tButton = this.game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
+        // yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
+        eButton = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        qMark = this.game.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK);
+        peButton = this.game.input.keyboard.addKey(Phaser.Keyboard.PERIOD);
+        qButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        quotButton = this.game.input.keyboard.addKey(Phaser.Keyboard.QUOTES);
+    },
+
     create: function() {
         console.log('play')
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -70,11 +85,11 @@ playState.prototype = {
         this.game.physics.arcade.enable(p1_hitboxes); // this line must be before the body propety of a hitbox is modified
         this.game.physics.arcade.enable(p1_attack_hitboxes);
 
-        p1_attack_hitbox_locations = {  punch_x: -10,
-                                        punch_y: 89,
-                                        kickright_x: 90,
-                                        kickright_y: 89,
-                                        kickleft_x: -20,
+        p1_attack_hitbox_locations = {  punch_x: 7,
+                                        punch_y: 93,
+                                        kickright_x: 135,
+                                        kickright_y: 150,
+                                        kickleft_x: 0,
                                         kickleft_y: 150,
                                      };
         
@@ -111,7 +126,7 @@ playState.prototype = {
         hitbox3.body.setSize(35,90,0,0);
         hitbox4.body.setSize(35,90,0,0);
 
-        punch_hitbox.body.setSize(50,20,0,0);
+        punch_hitbox.body.setSize(35,17,0,0);
         kickright_hitbox.body.setSize(50,20,0,0);
         kickleft_hitbox.body.setSize(50,20,0,0);
 
@@ -135,9 +150,9 @@ playState.prototype = {
         this.game.physics.arcade.enable(p2_hitboxes); // this line must be before the body propety of a hitbox is modified
         this.game.physics.arcade.enable(p2_attack_hitboxes);
         
-        p2_attack_hitbox_locations = {  punch_x: 90,
-                                        punch_y: 89,
-                                        kickright_x: 150,
+        p2_attack_hitbox_locations = {  punch_x: 122,
+                                        punch_y: 93,
+                                        kickright_x: 135,
                                         kickright_y: 150,
                                      };
 
@@ -171,7 +186,7 @@ playState.prototype = {
         hitbox3_2.body.setSize(35,90,0,0);
         hitbox4_2.body.setSize(35,90,0,0);
 
-        punch_hitbox_2.body.setSize(50,20,0,0);
+        punch_hitbox_2.body.setSize(35,17,0,0);
         kickright_hitbox_2.body.setSize(50,20,0,0);
 
 
@@ -261,16 +276,6 @@ playState.prototype = {
         player1.body.velocity.x = 0;
         player2.body.velocity.x = 0;
         
-        upButton = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
-        downButton = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
-        leftButton = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-        rightButton = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-        // tButton = this.game.input.keyboard.addKey(Phaser.Keyboard.T); // for hitbox control
-        // yButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Y); // for hitbox control
-        eButton = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
-        qMark = this.game.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK);
-        peButton = this.game.input.keyboard.addKey(Phaser.Keyboard.PERIOD);
-        qButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
 
         // this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
         this.game.physics.arcade.overlap(p1_attack_hitboxes, player2, overlap, null, this);
@@ -302,13 +307,30 @@ playState.prototype = {
             }
         else if (qMark.isDown) {
             player1.animations.play('punch');
+
+            for(var i = 0; i < p1_attack_anim_list.length; i++) { // need to do this loop to make p1_attack_anim_list stay as a javascript array instead of object
+                if (p1_attack_anim_list[i].name == 'punch') {
+                    attackAnimStarted(player1, p1_attack_anim_list[i])
+                }
+            }
         }
         else if (peButton.isDown) {
             player1.animations.play('kickleft');
+            for(var i = 0; i < p1_attack_anim_list.length; i++) {
+                if (p1_attack_anim_list[i].name == 'kickleft') {
+                    attackAnimStarted(player1, p1_attack_anim_list[i])
+                }
+            }
         }
-        // else if (peButton.isDown && cursors.right.isDown) {
-        //     player1.animatinos.play('kickright');
-        // }
+        else if (quotButton.isDown) {
+            player1.animations.play('kickright');
+            for(var i = 0; i < p1_attack_anim_list.length; i++) {
+                if (p1_attack_anim_list[i].name == 'kickright') {
+                    attackAnimStarted(player1, p1_attack_anim_list[i])
+                }
+            }
+
+        }
         else {
             //  Stand still
 
@@ -317,8 +339,8 @@ playState.prototype = {
             if (player1.body.onFloor() && !p1_attack_isPlaying) {
                 player1.animations.play('idle');
             }
-            //player.frame = 2;
         }
+
         if (cursors.up.isDown && player1.body.onFloor()){
                 //  Jump
             if(cursors.right.isDown) {
@@ -332,11 +354,11 @@ playState.prototype = {
         }
         
         // p1 attack animation callbacks
-        for(var i = 0; i < p1_attack_anim_list.length; i++) {
+        for(var i = 0; i < p1_attack_anim_list.length; i++) { // if animations are not playing, then hitboxes are inactive
 
             if (!p1_attack_anim_list[i].isPlaying) {
 
-                attackAnimStarted(player1, p1_attack_anim_list[i])
+                attackAnimEnded(player1, p1_attack_anim_list[i]);
             }
         }
 
@@ -382,6 +404,11 @@ playState.prototype = {
                         {
                             player2.body.velocity.x = 0;
                             player2.animations.play('punch');
+                            for(var i = 0; i < p2_attack_anim_list.length; i++) {
+                                if (p2_attack_anim_list[i].name == 'punch') {
+                                    attackAnimStarted(player2, p2_attack_anim_list[i])
+                                }
+                            }
                             this.cpuTimer = this.game.time.now + 500; // cpu will back away
 
                         }
@@ -437,9 +464,19 @@ playState.prototype = {
             }
             else if (eButton.isDown) {
                 player2.animations.play('punch');
+                for(var i = 0; i < p2_attack_anim_list.length; i++) {
+                    if (p2_attack_anim_list[i].name == 'punch') {
+                        attackAnimStarted(player2, p2_attack_anim_list[i])
+                    }
+                }
             }
             else if (qButton.isDown) {
                 player2.animations.play('kickright');
+                for(var i = 0; i < p2_attack_anim_list.length; i++) {
+                    if (p2_attack_anim_list[i].name == 'kickright') {
+                        attackAnimStarted(player2, p2_attack_anim_list[i])
+                    }
+                }
             }
             else {
 
@@ -464,27 +501,13 @@ playState.prototype = {
         }
 
         // p2 attack animation callbacks
-        for(var i = 0; i < p2_attack_anim_list.length; i++) {
+        for(var i = 0; i < p2_attack_anim_list.length; i++) { // if attack animation not playing, hitboxes inactive
 
             if (!p2_attack_anim_list[i].isPlaying) {
 
-                attackAnimStarted(player2, p2_attack_anim_list[i])
+                attackAnimEnded(player2, p2_attack_anim_list[i]);
             }
         }
-
-
-        // p1_hitboxes controls
-
-        // if (tButton.isDown) {
-
-        //     enableHitbox('head'); // if T is pressed down, the head hitbox is reenabled
-        // }
-        // else if (yButton.isDown) {
-
-        //     disableAllHitboxes(); // if Y is pressed down, all hitboxes in p1_hitboxes are removed
-        //     //this.game.state.start("title_screen"); // temporarily lets you go to the title screen
-        // }
-
 
     },
         
@@ -507,20 +530,24 @@ playState.prototype = {
        // this.game.debug.body(player1);
        // this.game.debug.body(player2);
    
-        for(var i = 0; i < p1_hitboxes.children.length; i++){
-           
-            this.game.debug.body(p1_hitboxes.children[i]);
-        }
-        for(var i = 0; i < p2_hitboxes.children.length; i++){
-           
-            this.game.debug.body(p2_hitboxes.children[i]);
-        }
 
+        // // player 1 body hitboxes   
+        // for(var i = 0; i < p1_hitboxes.children.length; i++){
+           
+        //     this.game.debug.body(p1_hitboxes.children[i]);
+        // }
+        // // player 2 body hitboxes
+        // for(var i = 0; i < p2_hitboxes.children.length; i++){
+           
+        //     this.game.debug.body(p2_hitboxes.children[i]);
+        // }
+
+        // player 1 attack hitboxes
         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
            
            this.game.debug.body(p1_attack_hitboxes.children[i]);
         }
-
+        // player2 attack hitboxes
         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
            
            this.game.debug.body(p2_attack_hitboxes.children[i]);
@@ -540,7 +567,7 @@ function enableAllHitboxes(hitboxName, hitboxGroup, hitboxGroupLocations) {
             hitboxGroup.children[i].reset(x_pos, y_pos);
         }
     }
-    console.log('enabled hitboxes for ' + hitboxName);
+    // console.log('enabled hitboxes for ' + hitboxName);
 }
 
 function disableAllHitboxes(hitboxName, hitboxGroup) {     
@@ -548,11 +575,12 @@ function disableAllHitboxes(hitboxName, hitboxGroup) {
         // console.log(hitboxGroup.children[i].name);
         if (hitboxGroup.children[i].name == hitboxName) {
 
+            hitboxGroup.children[i].reset(0,0); // reset location of sprite to be off screen
             hitboxGroup.children[i].kill();
             // console.log('killed some child');
         }
     }
-    console.log('killed all hitboxes for ' + hitboxName);
+    // console.log('killed all hitboxes for ' + hitboxName);
 }
 
 function endTimer() {
