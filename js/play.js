@@ -175,7 +175,7 @@ playState.prototype = {
 
         p1_hitboxes.forEachExists(function(hitbox) {   // hitboxes follow player properly by setting sprite.body.moves = false (not same as immovable)
             hitbox.body.moves = false;
-            hitbox.kill();     
+            // hitbox.kill();     
         });
 
         p1_attack_hitboxes.forEachExists(function(hitbox) {  // for punch hitboxes
