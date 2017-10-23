@@ -121,6 +121,10 @@ playState.prototype = {
         kickright_hitbox.name = 'kickright';
         kickleft_hitbox.name = 'kickleft';
 
+        punch_hitbox.damage = 20;
+        kickright_hitbox.damage = 10;
+        kickleft_hitbox.damage = 10;
+
         hitbox1.body.setSize(50,50,0,0); // size of sprite: width, height, offset width, offset height
         hitbox2.body.setSize(70,87,0,0);
         hitbox3.body.setSize(35,90,0,0);
@@ -180,6 +184,9 @@ playState.prototype = {
 
         punch_hitbox_2.name = 'punch';
         kickright_hitbox_2.name = 'kickright'
+
+        punch_hitbox_2.damage = 20;
+        kickright_hitbox_2.damage = 10;
 
         hitbox1_2.body.setSize(50,50,0,0); // size of sprite: width, height, offset width, offset height
         hitbox2_2.body.setSize(70,87,0,0);
@@ -245,7 +252,7 @@ playState.prototype = {
         cursors = this.game.input.keyboard.createCursorKeys();
 
         //health bar
-        player1.health = 10;
+        player1.health = 100;
         player1.maxHealth = 100;
         
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
@@ -257,7 +264,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        player2.health = 10;
+        player2.health = 100;
         player2.maxHealth = 100;
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
         this.healthMeterBar.bar(player2, {
@@ -278,8 +285,16 @@ playState.prototype = {
         
 
         // this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
-        this.game.physics.arcade.overlap(p1_attack_hitboxes, player2, overlap, null, this);
-        this.game.physics.arcade.overlap(p2_attack_hitboxes, player1, overlap, null, this);
+        for (var i = 0; i < p1_attack_hitboxes.children.length; i++) {
+
+            this.game.physics.arcade.overlap(player2, p1_attack_hitboxes.children[i], overlap, null, this)
+        }
+        for (var i = 0; i < p2_attack_hitboxes.children.length; i++) {
+
+            this.game.physics.arcade.overlap(player1, p2_attack_hitboxes.children[i], overlap, null, this)
+        }
+        // this.game.physics.arcade.overlap(p1_attack_hitboxes, player2, overlap, null, this);
+        // this.game.physics.arcade.overlap(p2_attack_hitboxes, player1, overlap, null, this);
 
         //player1 controls
         if (cursors.left.isDown && cursors.right.isDown) {
@@ -617,7 +632,8 @@ function endTimer() {
 
 function overlap(player1, player2) {
     if (this.game.time.now > this.invincibleTimer) {
-            player1.health = player1.health -10;
+
+            player1.health = player1.health - player2.damage;
             this.invincibleTimer = this.game.time.now + 500;
         }
     if (player1.health == 0 || player2.health == 0) {
