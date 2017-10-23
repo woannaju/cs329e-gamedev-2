@@ -5,6 +5,7 @@ var loadState = {
         this.game.load.image('solid_bg', 'assets/solid_bg.jpg');
         this.game.load.image('dark_bg', 'assets/dark_background.jpg');
         this.game.load.image('boxingring', 'assets/boxingring_bg.jpeg');
+        this.game.load.image('howtoplay', 'assets/howtoplay.png');
         this.game.load.image('laser', 'assets/lazer_65x16.png');
         //this.game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
         this.game.load.spritesheet('ryu', 'assets/robot_200x316.png', 200, 316);

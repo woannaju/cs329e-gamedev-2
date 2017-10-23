@@ -1,6 +1,6 @@
 var playState = function(game){
     var player1;
-    var player2;    
+    var player2;   
     var cursors;
     var p1_lasers;
     var p1_hitboxes;
@@ -39,6 +39,7 @@ playState.prototype = {
         qButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
         quotButton = this.game.input.keyboard.addKey(Phaser.Keyboard.QUOTES);
         zButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        space = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     },
 
     create: function() {
@@ -49,7 +50,7 @@ playState.prototype = {
         timer = this.game.time.create();
         timerEvent = timer.add(Phaser.Timer.SECOND * 59, endTimer, this);
         
-        timer.start();
+        //timer.start();
 
         player2 = this.game.add.sprite(500, 400, 'ryu');
         player1 = this.game.add.sprite(850, 400, 'ken');
@@ -224,7 +225,7 @@ playState.prototype = {
         hitbox4_2.name = 'right_leg';
 
         punch_hitbox_2.name = 'punch';
-        kickright_hitbox_2.name = 'kickright'
+        kickright_hitbox_2.name = 'kickright';
 
         punch_hitbox_2.damage = 20;
         kickright_hitbox_2.damage = 10;
@@ -318,12 +319,19 @@ playState.prototype = {
 
         cpu_ai = false; // boolean that determines if cpu ai takes over player 2 or not
         move_backwards = false;
+        
+        
+        htp = this.game.add.sprite(0,0,'howtoplay');
     },    
 
     update: function() {
         player1.body.velocity.x = 0;
         player2.body.velocity.x = 0;
         
+        if (space.isDown){
+            htp.exists = false;
+            timer.start();
+        }
 
         // this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
         for (var i = 0; i < p1_attack_hitboxes.children.length; i++) {
@@ -578,10 +586,10 @@ playState.prototype = {
         if(timer.running) {
             this.game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
         }
-        else {
-            this.game.debug.text("End of Round", 200, 250, "#ffb64d", '100px ScriptoramaMarkdownJF');
-            //send to endState Winner/loser/sudden death
-        }
+//        else {
+//            this.game.debug.text("End of Round", 200, 250, "#ffb64d", '100px ScriptoramaMarkdownJF');
+//            //send to endState Winner/loser/sudden death
+//        }
         
         function formatTime(s) {
             var minutes = "0" + Math.floor(s / 60);
@@ -593,27 +601,27 @@ playState.prototype = {
        // this.game.debug.body(player2);
    
 
-        // player 1 body hitboxes   
-        // for(var i = 0; i < p1_hitboxes.children.length; i++){
+         //player 1 body hitboxes   
+         for(var i = 0; i < p1_hitboxes.children.length; i++){
            
-        //     this.game.debug.body(p1_hitboxes.children[i]);
-        // }
-        // // player 2 body hitboxes
-        // for(var i = 0; i < p2_hitboxes.children.length; i++){
+             this.game.debug.body(p1_hitboxes.children[i]);
+         }
+         // player 2 body hitboxes
+         for(var i = 0; i < p2_hitboxes.children.length; i++){
            
-        //     this.game.debug.body(p2_hitboxes.children[i]);
-        // }
+             this.game.debug.body(p2_hitboxes.children[i]);
+         }
 
-        // // player 1 attack hitboxes
-        // for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
+         // player 1 attack hitboxes
+         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
            
-        //    this.game.debug.body(p1_attack_hitboxes.children[i]);
-        // }
-        // // player2 attack hitboxes
-        // for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
+            this.game.debug.body(p1_attack_hitboxes.children[i]);
+         }
+         // player2 attack hitboxes
+         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
            
-        //    this.game.debug.body(p2_attack_hitboxes.children[i]);
-        // }
+            this.game.debug.body(p2_attack_hitboxes.children[i]);
+         }
 
         
         this.game.debug.body(p1_lasers_hitbox);
@@ -684,7 +692,8 @@ function overlap(player1, attack_hitbox) {
     if (this.game.time.now > this.invincibleTimer) {
             
             if (attack_hitbox.name == 'laser') {
-                // resetLaser(attack_hitbox);
+                
+                //resetLaser(attack_hitbox);
             }
             player1.health = player1.health - attack_hitbox.damage;
             this.invincibleTimer = this.game.time.now + 500;
