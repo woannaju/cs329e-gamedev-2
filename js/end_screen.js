@@ -27,6 +27,6 @@ var end_screen = {
     },
 
     start: function() {
-        this.game.state.restart('play', true, false);
+        this.game.state.start('play', true, false);
     }
 }

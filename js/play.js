@@ -245,7 +245,7 @@ playState.prototype = {
         cursors = this.game.input.keyboard.createCursorKeys();
 
         //health bar
-        player1.health = 100;
+        player1.health = 10;
         player1.maxHealth = 100;
         
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
@@ -257,7 +257,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        player2.health = 100;
+        player2.health = 10;
         player2.maxHealth = 100;
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
         this.healthMeterBar.bar(player2, {
@@ -531,16 +531,16 @@ playState.prototype = {
        // this.game.debug.body(player2);
    
 
-        // // player 1 body hitboxes   
-        // for(var i = 0; i < p1_hitboxes.children.length; i++){
+        // player 1 body hitboxes   
+        for(var i = 0; i < p1_hitboxes.children.length; i++){
            
-        //     this.game.debug.body(p1_hitboxes.children[i]);
-        // }
-        // // player 2 body hitboxes
-        // for(var i = 0; i < p2_hitboxes.children.length; i++){
+            this.game.debug.body(p1_hitboxes.children[i]);
+        }
+        // player 2 body hitboxes
+        for(var i = 0; i < p2_hitboxes.children.length; i++){
            
-        //     this.game.debug.body(p2_hitboxes.children[i]);
-        // }
+            this.game.debug.body(p2_hitboxes.children[i]);
+        }
 
         // player 1 attack hitboxes
         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
@@ -553,6 +553,32 @@ playState.prototype = {
            this.game.debug.body(p2_attack_hitboxes.children[i]);
         }
        
+    },
+
+    shutdown: function() {
+        console.log('shutdown called');
+        
+        /**
+         NEED TO FIND A WAY TO CALL 'PLAY' STATE WITH ACTIVE HITBOXES AFTER GAME OVER SCREEN
+        */
+
+        
+        // p1_attack_hitboxes.forEachExists(function(hitbox) {  // for punch hitboxes
+            
+        //     hitbox.kill(); // kill each attack hitbox since none should be active     
+        // });
+        // p2_attack_hitboxes.forEachExists(function(hitbox) {
+
+        //     hitbox.kill();
+        // });
+        // this.game.world.removeAll();
+        // for (var i = 0; i < p1_attack_anim_list; i++) {
+        //     disableAllHitboxes(p1_attack_anim_list[i].name, p1_attack_hitboxes);
+        // }
+        // for (var i = 0; i < p2_attack_anim_list; i+_) {
+        //     disableAllHitboxes(p2_attack_anim_list[i].name, p2_attack_hitboxes);
+        // }
+
     }
 };
 
@@ -565,6 +591,7 @@ function enableAllHitboxes(hitboxName, hitboxGroup, hitboxGroupLocations) {
             var y_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_y"]
 
             hitboxGroup.children[i].reset(x_pos, y_pos);
+            console.log('enabled hitbox for ' + hitboxName);
         }
     }
     // console.log('enabled hitboxes for ' + hitboxName);
