@@ -259,6 +259,7 @@ playState.prototype = {
         player1.animations.add('jumpright', [38, 39, 40, 41, 42, 43], 5, true);
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         player1.animations.add('crouch', [31], 5, true);
+        player1.animations.add('hit', [58], 5, true);
         var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         var p1_anim_kickleft = player1.animations.add('kickleft', [44, 45, 46, 47], 10, false);
         var p1_anim_kickright = player1.animations.add('kickright', [54, 55, 56, 57], 10, false);
@@ -275,11 +276,14 @@ playState.prototype = {
         player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         player2.animations.add('crouch', [31], 5, true);
+        player2.animations.add('hit', [58], 5, true);
         var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         var p2_anim_kickright = player2.animations.add('kickright', [44, 45, 46, 47], 10, false);
         
+        
         p2_attack_anim_list.push(p2_anim_punch); // add the rest of p2's attacks here
         p2_attack_anim_list.push(p2_anim_kickright);
+        
 
 //        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
 //        player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
@@ -337,6 +341,7 @@ playState.prototype = {
         for (var i = 0; i < p1_attack_hitboxes.children.length; i++) {
 
             this.game.physics.arcade.overlap(player2, p1_attack_hitboxes.children[i], overlap, null, this)
+            
         }
         for (var i = 0; i < p2_attack_hitboxes.children.length; i++) {
 
@@ -602,29 +607,29 @@ playState.prototype = {
    
 
          //player 1 body hitboxes   
-         for(var i = 0; i < p1_hitboxes.children.length; i++){
-           
-             this.game.debug.body(p1_hitboxes.children[i]);
-         }
-         // player 2 body hitboxes
-         for(var i = 0; i < p2_hitboxes.children.length; i++){
-           
-             this.game.debug.body(p2_hitboxes.children[i]);
-         }
-
-         // player 1 attack hitboxes
-         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
-           
-            this.game.debug.body(p1_attack_hitboxes.children[i]);
-         }
-         // player2 attack hitboxes
-         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
-           
-            this.game.debug.body(p2_attack_hitboxes.children[i]);
-         }
-
-        
-        this.game.debug.body(p1_lasers_hitbox);
+//         for(var i = 0; i < p1_hitboxes.children.length; i++){
+//           
+//             this.game.debug.body(p1_hitboxes.children[i]);
+//         }
+//         // player 2 body hitboxes
+//         for(var i = 0; i < p2_hitboxes.children.length; i++){
+//           
+//             this.game.debug.body(p2_hitboxes.children[i]);
+//         }
+//
+//         // player 1 attack hitboxes
+//         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
+//           
+//            this.game.debug.body(p1_attack_hitboxes.children[i]);
+//         }
+//         // player2 attack hitboxes
+//         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
+//           
+//            this.game.debug.body(p2_attack_hitboxes.children[i]);
+//         }
+//
+//        
+//        this.game.debug.body(p1_lasers_hitbox);
        
     },
 
@@ -697,7 +702,9 @@ function overlap(player1, attack_hitbox) {
             }
             player1.health = player1.health - attack_hitbox.damage;
             this.invincibleTimer = this.game.time.now + 500;
+        player1.animations.play('hit');
         }
+    
 
     if (player1.health <= 0 || player2.health <= 0) {
         music.stop();
