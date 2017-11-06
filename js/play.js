@@ -43,7 +43,8 @@ playState.prototype = {
     },
 
     create: function() {
-        console.log('play')
+        console.log('play');
+        console.log('create called');
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
     	bg = this.game.add.sprite(70,0,'boxingring');
         
@@ -326,6 +327,7 @@ playState.prototype = {
         
         
         htp = this.game.add.sprite(0,0,'howtoplay');
+        console.log('create finished')
     },    
 
     update: function() {
@@ -629,7 +631,7 @@ playState.prototype = {
 //         }
 //
 //        
-//        this.game.debug.body(p1_lasers_hitbox);
+       // this.game.debug.body(p1_lasers_hitbox);
        
     },
 
@@ -697,8 +699,8 @@ function overlap(player1, attack_hitbox) {
     if (this.game.time.now > this.invincibleTimer) {
             
             if (attack_hitbox.name == 'laser') {
-                
-                //resetLaser(attack_hitbox);
+                var laser = attack_hitbox.parent; // get the parent of the laser's attack hitbox, which needs to be killed
+                resetLaser(laser);
             }
             player1.health = player1.health - attack_hitbox.damage;
             this.invincibleTimer = this.game.time.now + 500;
@@ -780,14 +782,14 @@ function fireLaser(player) {
 
         laser.reset(player.x, player.y);
         laser.addChild(p1_lasers_hitbox);
-        laser.body.velocity.x = -300;
+        laser.body.velocity.x = -500;
         console.log('fired laser');
 
     }
 }
 
 function resetLaser(laser) {
-
+    laser.children[0].reset(0,0); // get the first laser's hitbox and set it to 0,0
     laser.kill();
     console.log('killed laser');
 }
