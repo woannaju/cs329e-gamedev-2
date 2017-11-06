@@ -10,9 +10,7 @@ var playState = function(game){
     var p1_attack_hitbox_locations;
     var p2_attack_hitbox_locations;
     var p1_lasers_hitbox_locations;
-    var p2_lasers_hitbox_locations;
     var p1_lasers_hitbox;
-    var p2_lasers_hitbox;
     var timer;
     var timerEvent;
     var text;
@@ -41,13 +39,11 @@ playState.prototype = {
         qButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
         quotButton = this.game.input.keyboard.addKey(Phaser.Keyboard.QUOTES);
         zButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
-        commaButton = this.game.input.keyboard.addKey(Phaser.Keyboard.COMMA);
         space = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     },
 
     create: function() {
-        console.log('play');
-        console.log('create called');
+        console.log('play')
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
     	bg = this.game.add.sprite(70,0,'boxingring');
         
@@ -59,18 +55,14 @@ playState.prototype = {
         player2 = this.game.add.sprite(500, 400, 'ryu');
         player1 = this.game.add.sprite(850, 400, 'ken');
         
-        laser1 = this.game.add.sprite(0, 0, 'laser'); // laser for p1
-        laser1.alive = false;
-        laser1.visible = false;
-        laser2 = this.game.add.sprite(0, 0, 'laser2'); // laser for p2
-        laser2.alive = false;
-        laser2.visible = false;
+        laser = this.game.add.sprite(0, 0, 'laser');
+        laser.alive = false;
+        laser.visible = false;
 
         player1.scale.setTo(.8, .8);
         player2.scale.setTo(.8, .8);
         bg.scale.setTo(0.2,0.2);
-        laser1.scale.setTo(0.8, 0.8);
-        laser2.scale.setTo(0.8, 0.8);
+        laser.scale.setTo(0.8, 0.8);
 
         this.game.loading_music.stop();
 
@@ -81,12 +73,10 @@ playState.prototype = {
 
         this.game.physics.arcade.enable(player1);
         this.game.physics.arcade.enable(player2);
-        this.game.physics.arcade.enable(laser1);
-        this.game.physics.arcade.enable(laser2);
+        this.game.physics.arcade.enable(laser);
 
         this.game.physics.arcade.collide(player1, player2);
-        this.game.physics.arcade.collide(laser1, player2);
-        this.game.physics.arcade.collide(laser2, player1);
+        this.game.physics.arcade.collide(laser, player2);
 
 
         player1.body.bounce.y = 0.2;
@@ -99,11 +89,8 @@ playState.prototype = {
         player1.body.setSize(130,290,10,15);
         player2.body.setSize(130,290,10,15);
 
-        laser1.body.gravity.y = 0;
-        laser1.body.collideWorldBounds = true;
-
-        laser2.body.gravity.y = 0;
-        laser2.body.collideWorldBounds = true;
+        laser.body.gravity.y = 0;
+        laser.body.collideWorldBounds = true;
 
         p1_lasers_hitbox_locations = {  laser_x: 0,
                                         laser_y: 0,
@@ -199,31 +186,16 @@ playState.prototype = {
 
         p1_lasers_hitbox.body.moves = false;
         
-
         //player 2 hitboxes
-        p2_lasers_hitbox_locations = {  laser_x: 0,
-                                        laser_y: 0,
-                                     };
-        p2_lasers_hitbox = this.game.make.sprite(p2_lasers_hitbox_locations.laser_x, p2_lasers_hitbox_locations.laser_y, null);
-        
         p2_hitboxes = this.game.add.group();
         p2_attack_hitboxes = this.game.add.group(); // contains all hitboxes for all attacks for p2
-        p2_lasers = this.game.add.group();
         p2_hitboxes.enableBody = true;
         p2_attack_hitboxes.enableBody = true;
-        p2_lasers.enableBody = true;
-        p2_lasers_hitbox.enableBody = true;
         player2.addChild(p2_hitboxes);
         player2.addChild(p2_attack_hitboxes);
         this.game.physics.arcade.enable(p2_hitboxes); // this line must be before the body propety of a hitbox is modified
         this.game.physics.arcade.enable(p2_attack_hitboxes);
-        this.game.physics.arcade.enable(p2_lasers);
-        this.game.physics.arcade.enable(p2_lasers_hitbox);
         
-        p2_lasers.createMultiple(1,'laser2');
-        p2_lasers.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', resetLaser);
-        p2_lasers.setAll('checkWorldBounds', true);
-
         p2_attack_hitbox_locations = {  punch_x: 122,
                                         punch_y: 93,
                                         kickright_x: 135,
@@ -238,7 +210,6 @@ playState.prototype = {
         var punch_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
         var kickright_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.kickright_x, p2_attack_hitbox_locations.kickright_y, null);
 
-        p2_lasers_hitbox.name = 'laser';
 
         p2_hitboxes.add(hitbox1_2);
         p2_hitboxes.add(hitbox2_2);
@@ -258,14 +229,11 @@ playState.prototype = {
 
         punch_hitbox_2.damage = 20;
         kickright_hitbox_2.damage = 10;
-        p2_lasers_hitbox.damage = 15;
 
         hitbox1_2.body.setSize(50,50,0,0); // size of sprite: width, height, offset width, offset height
         hitbox2_2.body.setSize(70,87,0,0);
         hitbox3_2.body.setSize(35,90,0,0);
         hitbox4_2.body.setSize(35,90,0,0);
-
-        p2_lasers_hitbox.body.setSize(65,16,0,0);
 
         punch_hitbox_2.body.setSize(35,17,0,0);
         kickright_hitbox_2.body.setSize(50,20,0,0);
@@ -281,8 +249,6 @@ playState.prototype = {
             hitbox.kill(); // kill each attack hitbox since none should be active     
         });
 
-        p2_lasers_hitbox.body.moves = false;
-
         this.invincibleTimer = 0;
         this.cpuTimer = 0;
 
@@ -293,7 +259,7 @@ playState.prototype = {
         player1.animations.add('jumpright', [38, 39, 40, 41, 42, 43], 5, true);
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         player1.animations.add('crouch', [31], 5, true);
-        player1.animations.add('hit', [58], 5, true);
+        player1.animations.add('hit', [58], 1, true);
         var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         var p1_anim_kickleft = player1.animations.add('kickleft', [44, 45, 46, 47], 10, false);
         var p1_anim_kickright = player1.animations.add('kickright', [54, 55, 56, 57], 10, false);
@@ -310,7 +276,7 @@ playState.prototype = {
         player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         player2.animations.add('crouch', [31], 5, true);
-        player2.animations.add('hit', [58], 5, true);
+        player2.animations.add('hit', [58], 1, true);
         var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         var p2_anim_kickright = player2.animations.add('kickright', [44, 45, 46, 47], 10, false);
         
@@ -360,7 +326,6 @@ playState.prototype = {
         
         
         htp = this.game.add.sprite(0,0,'howtoplay');
-        console.log('create finished')
     },    
 
     update: function() {
@@ -384,7 +349,6 @@ playState.prototype = {
         }
 
         this.game.physics.arcade.overlap(player2, p1_lasers_hitbox, overlap, null, this);
-        this.game.physics.arcade.overlap(player1, p2_lasers_hitbox, overlap, null, this);
         // this.game.physics.arcade.overlap(p1_attack_hitboxes, player2, overlap, null, this);
         // this.game.physics.arcade.overlap(p2_attack_hitboxes, player1, overlap, null, this);
 
@@ -413,6 +377,9 @@ playState.prototype = {
                 player1.animations.play('crouch');
             }
         else if (qMark.isDown) {
+            if (cursors.right.isDown) {
+                player1.
+            }
             player1.animations.play('punch');
 
             for(var i = 0; i < p1_attack_anim_list.length; i++) { // need to do this loop to make p1_attack_anim_list stay as a javascript array instead of object
@@ -438,7 +405,7 @@ playState.prototype = {
             }
 
         }
-        else if (commaButton.isDown) { // laser fired
+        else if (zButton.isDown) { // laser fired
             fireLaser(player1);
 
         }
@@ -589,9 +556,6 @@ playState.prototype = {
                     }
                 }
             }
-            else if (zButton.isDown) {
-                fireLaser(player2);
-            }
             else {
 
                 var p2_attack_isPlaying = isAttackAnimPlaying(p2_attack_anim_list); // checks if any attack animations are playing for p2
@@ -646,30 +610,29 @@ playState.prototype = {
    
 
          //player 1 body hitboxes   
-//         for(var i = 0; i < p1_hitboxes.children.length; i++){
-//           
-//             this.game.debug.body(p1_hitboxes.children[i]);
-//         }
-//         // player 2 body hitboxes
-//         for(var i = 0; i < p2_hitboxes.children.length; i++){
-//           
-//             this.game.debug.body(p2_hitboxes.children[i]);
-//         }
-//
-//         // player 1 attack hitboxes
-//         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
-//           
-//            this.game.debug.body(p1_attack_hitboxes.children[i]);
-//         }
-//         // player2 attack hitboxes
-//         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
-//           
-//            this.game.debug.body(p2_attack_hitboxes.children[i]);
-//         }
+         for(var i = 0; i < p1_hitboxes.children.length; i++){
+           
+             this.game.debug.body(p1_hitboxes.children[i]);
+         }
+         // player 2 body hitboxes
+         for(var i = 0; i < p2_hitboxes.children.length; i++){
+           
+             this.game.debug.body(p2_hitboxes.children[i]);
+         }
+
+         // player 1 attack hitboxes
+         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
+           
+            this.game.debug.body(p1_attack_hitboxes.children[i]);
+         }
+         // player2 attack hitboxes
+         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
+           
+            this.game.debug.body(p2_attack_hitboxes.children[i]);
+         }
 //
 //        
-       // this.game.debug.body(p1_lasers_hitbox);
-       // this.game.debug.body(p2_lasers_hitbox);
+        //this.game.debug.body(p1_lasers_hitbox);
        
     },
 
@@ -737,12 +700,12 @@ function overlap(player1, attack_hitbox) {
     if (this.game.time.now > this.invincibleTimer) {
             
             if (attack_hitbox.name == 'laser') {
-                var laser = attack_hitbox.parent; // get the parent of the laser's attack hitbox, which needs to be killed
-                resetLaser(laser);
+                
+                //resetLaser(attack_hitbox);
             }
             player1.health = player1.health - attack_hitbox.damage;
             this.invincibleTimer = this.game.time.now + 500;
-        //player1.animations.play('hit');
+        player1.animations.play('hit');
         }
     
 
@@ -814,35 +777,20 @@ function isAttackAnimPlaying(attack_anim_list) {
 
 function fireLaser(player) {
 
-    if (player == player1) {
-        var laser = p1_lasers.getFirstExists(false);
-    }
-    else {
-        var laser = p2_lasers.getFirstExists(false);
-    }
+    var laser = p1_lasers.getFirstExists(false);
    
-    if (laser) { 
-        if (player == player1) {
-            laser.reset(player.x, player.y);
-            laser.addChild(p1_lasers_hitbox);
-            laser.body.velocity.x = -500;
-        }
-        else {
-            laser.reset(player.x + 100, player.y);
-            laser.addChild(p2_lasers_hitbox);
-            laser.body.velocity.x = 500;
-        }   
-//    if(laser2) {
-//        laser2.reset(player.x, player.y);
-//        laser2.addChild(p2_lasers_hitbox);
-//        laser2.body.velocity.x = 500;
-//    }
+    if (laser) {
+
+        laser.reset(player.x, player.y);
+        laser.addChild(p1_lasers_hitbox);
+        laser.body.velocity.x = -600;
         console.log('fired laser');
+
     }
 }
 
 function resetLaser(laser) {
-    laser.children[0].reset(0,0); // get the first laser's hitbox and set it to 0,0
+
     laser.kill();
     console.log('killed laser');
 }

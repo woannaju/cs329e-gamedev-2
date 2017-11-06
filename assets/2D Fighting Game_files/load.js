@@ -7,7 +7,6 @@ var loadState = {
         this.game.load.image('boxingring', 'assets/boxingring_bg.jpeg');
         this.game.load.image('howtoplay', 'assets/howtoplay.png');
         this.game.load.image('laser', 'assets/lazer_65x16.png');
-        this.game.load.image('laser2', 'assets/enemy_lazer_65x16.png');
         //this.game.load.spritesheet('ryu', 'assets/RyuSpriteMap125x135.png', 125, 135);
         this.game.load.spritesheet('ryu', 'assets/robot_200x316.png', 200, 316);
         //this.game.load.spritesheet('ken', 'assets/ken-sprite-sheet.png', 103, 135);

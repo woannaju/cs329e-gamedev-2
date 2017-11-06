@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)http://127.0.0.1:50939/index.html -->
+<html data-brackets-id="1"><head data-brackets-id="2"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+	
+    <title data-brackets-id="4">2D Fighting Game</title>
+
+    <script data-brackets-id="5" type="text/javascript" src="./2D Fighting Game_files/phaser.min.js"></script>
+    <script data-brackets-id="6" type="text/javascript" src="./2D Fighting Game_files/HealthMeter.js"></script>
+    <script data-brackets-id="7" type="text/javascript" src="./2D Fighting Game_files/boot.js"></script>
+    <script data-brackets-id="8" type="text/javascript" src="./2D Fighting Game_files/load.js"></script>
+    <script data-brackets-id="9" type="text/javascript" src="./2D Fighting Game_files/title_screen.js"></script>
+    <script data-brackets-id="10" type="text/javascript" src="./2D Fighting Game_files/play.js"></script>
+    <script data-brackets-id="11" type="text/javascript" src="./2D Fighting Game_files/end_screen.js"></script>
+    
+
+    <script data-brackets-id="12">
+    (function() {
+        var game = new Phaser.Game(1024, 525, Phaser.AUTO, 'game');
+
+        game.state.add('title_screen', title_screen);
+        game.state.add('boot', bootState);
+        game.state.add('load', loadState);
+        game.state.add('play', playState);
+        game.state.add('end', end_screen);
+        console.log('index')
+
+        game.state.start('boot');
+    })();
+    </script>
+</head>
+<body data-brackets-id="13">
+    <div data-brackets-id="14" id="gameDiv"> </div>
+
+<canvas width="1024" height="525" style="display: block; touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 1024px; height: 525px;"></canvas></body></html>
