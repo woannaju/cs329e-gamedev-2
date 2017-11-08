@@ -72,6 +72,9 @@ playState.prototype = {
         player2.name = 'ryu';
         player1.name = 'ken';
 
+//initializing defense
+        player1.isHeadDisabled = false;
+        player2.isHeadDisabled = false;
 //initialize laser  
         laser1 = this.game.add.sprite(0, 0, 'laser'); // laser for p1
         laser1.alive = false;
@@ -463,8 +466,15 @@ playState.prototype = {
                 p1_is_blocking = true;
                 player1.body.velocity.x = 0;
                 player1.animations.play('crouch');
-                disableAllHitboxes('head', p1_hitboxes);
-                console.log('disabled head hitbox for p1');
+                console.log(player1.isHeadDisabled);
+                if (player1.isHeadDisabled != true){
+                    disableAllHitboxes('head', p1_hitboxes);
+                    player1.isHeadDisabled == true;
+                    console.log(player1.isHeadDisabled);
+                    //console.log('disabled head hitbox for p1');
+                    console.log('2');
+                }
+                
             }
         else if (qMark.isDown) {
             player1.animations.play('punch');
@@ -507,7 +517,12 @@ playState.prototype = {
         }
 
         if (!isAttackAnimPlaying(p1_defense_anim_list)) {
-            enableAllHitboxes('head', p1_hitboxes, p1_hitbox_locations);
+            if (player1.isHeadDisabled == true){
+                enableAllHitboxes('head', p1_hitboxes, p1_hitbox_locations);
+                player1.isHeadDisabled == false;
+                console.log('enable head hitbox for p1');
+            }
+            
         }
 
         if (cursors.up.isDown && player1.body.onFloor()){
@@ -635,8 +650,12 @@ playState.prototype = {
                 p2_is_blocking = true;
                 player2.body.velocity.x = 0;
                 player2.animations.play('crouch');
-                disableAllHitboxes('head', p2_hitboxes);
-                console.log('disabled head hitbox for p2');
+                 if (player2.isHeadDisabled != true){
+                    disableAllHitboxes('head', p2_hitboxes);
+                    player2.isHeadDisabled == true;
+                    console.log('disabled head hitbox for p2');
+                }
+                
             }
             else if (eButton.isDown) {
                 player2.animations.play('punch');
@@ -667,7 +686,11 @@ playState.prototype = {
             }
 
             if (!isAttackAnimPlaying(p2_defense_anim_list)) {
-                enableAllHitboxes('head', p2_hitboxes, p2_hitbox_locations);
+                if (player2.isHeadDisabled == true){
+                    enableAllHitboxes('head', p2_hitboxes, p2_hitbox_locations);
+                    player2.isHeadDisabled == false;
+                    console.log('enable head hitbox for p2');
+            }
             }
 
             if (upButton.isDown && player2.body.onFloor()){
@@ -701,6 +724,7 @@ playState.prototype = {
         }
         else {
             if(htp.exists == false){
+                music.stop();
                 this.game.state.start('end');
             }
         }
