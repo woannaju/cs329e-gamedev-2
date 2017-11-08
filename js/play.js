@@ -697,6 +697,11 @@ playState.prototype = {
         if(timer.running) {
             this.game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
         }
+        else {
+            if(htp.exists == false){
+                this.game.state.start('end');
+            }
+        }
 //        else {
 //            this.game.debug.text("End of Round", 200, 250, "#ffb64d", '100px ScriptoramaMarkdownJF');
 //            //send to endState Winner/loser/sudden death
