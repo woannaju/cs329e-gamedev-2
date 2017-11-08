@@ -75,7 +75,7 @@ playState.prototype = {
 //initializing defense
         player1.isHeadDisabled = false;
         player2.isHeadDisabled = false;
-        
+
 //initialize laser  
         laser1 = this.game.add.sprite(0, 0, 'laser'); // laser for p1
         laser1.alive = false;
@@ -95,6 +95,12 @@ playState.prototype = {
         this.game.loading_music.stop();
         music = this.game.add.audio('boden');
         music.play();
+
+//sound effects
+        punching_sound = this.game.add.audio("punch_sound")
+        kicking_sound = this.game.add.audio("kick_sound")
+        blocking_sound = this.game.add.audio("block_sound")
+        laser_sound = this.game.add.audio("laser_sound")
 
         
 //enable physics and collisions
@@ -477,7 +483,7 @@ playState.prototype = {
             }
         else if (qMark.isDown) {
             player1.animations.play('punch');
-
+            punching_sound.play();
             for(var i = 0; i < p1_attack_anim_list.length; i++) { // need to do this loop to make p1_attack_anim_list stay as a javascript array instead of object
                 if (p1_attack_anim_list[i].name == 'punch') {
                     attackAnimStarted(player1, p1_attack_anim_list[i])
@@ -486,6 +492,7 @@ playState.prototype = {
         }
         else if (peButton.isDown) {
             player1.animations.play('kickleft');
+            kicking_sound.play();
             for(var i = 0; i < p1_attack_anim_list.length; i++) {
                 if (p1_attack_anim_list[i].name == 'kickleft') {
                     attackAnimStarted(player1, p1_attack_anim_list[i])
@@ -494,6 +501,7 @@ playState.prototype = {
         }
         else if (quotButton.isDown) {
             player1.animations.play('kickright');
+            kicking_sound.play();
             for(var i = 0; i < p1_attack_anim_list.length; i++) {
                 if (p1_attack_anim_list[i].name == 'kickright') {
                     attackAnimStarted(player1, p1_attack_anim_list[i])
@@ -503,6 +511,8 @@ playState.prototype = {
         }
         else if (commaButton.isDown) { // laser fired
             fireLaser(player1);
+            
+
 
         }
         else {
@@ -658,6 +668,7 @@ playState.prototype = {
             }
             else if (eButton.isDown) {
                 player2.animations.play('punch');
+                punching_sound.play();
                 for(var i = 0; i < p2_attack_anim_list.length; i++) {
                     if (p2_attack_anim_list[i].name == 'punch') {
                         attackAnimStarted(player2, p2_attack_anim_list[i])
@@ -666,6 +677,7 @@ playState.prototype = {
             }
             else if (qButton.isDown) {
                 player2.animations.play('kickright');
+                kicking_sound.play();
                 for(var i = 0; i < p2_attack_anim_list.length; i++) {
                     if (p2_attack_anim_list[i].name == 'kickright') {
                         attackAnimStarted(player2, p2_attack_anim_list[i])
@@ -960,6 +972,7 @@ function fireLaser(player) {
 //        laser2.body.velocity.x = 500;
 //    }
         console.log('fired laser');
+        laser_sound.play();
     }
 }
 
