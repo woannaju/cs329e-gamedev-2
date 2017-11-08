@@ -5,6 +5,8 @@ var playState = function(game){
     var p1_lasers;
     var p1_hitboxes;
     var p2_hitboxes;
+    var p1_hitbox_locations;
+    var p2_hitbox_locations;
     var p1_attack_hitboxes;
     var p2_attack_hitboxes;
     var p1_attack_hitbox_locations;
@@ -27,8 +29,8 @@ var playState = function(game){
 //javascript global vars -- must be arrays, even with single element
 var p1_attack_anim_list = [];   // list of attack animations for p1
 var p2_attack_anim_list = [];   // list of attack animations for p2
-//var p1_defense_anim_list = [];  // list of defensive animations for p2
-//var p2_defense_anim_list = [];  // list of defensive animations for p2
+var p1_defense_anim_list = [];  // list of defensive animations for p2
+var p2_defense_anim_list = [];  // list of defensive animations for p2
 
 
 playState.prototype = {
@@ -146,12 +148,22 @@ playState.prototype = {
                                         kickleft_x: 0,
                                         kickleft_y: 150,
                                      };
+
+        p1_hitbox_locations = { head_x: 55,
+                                head_y: 12,
+                                torso_x: 57,
+                                torso_y: 89,
+                                left_leg_x: 47,
+                                left_leg_y: 190,
+                                right_leg_x: 110,
+                                right_leg_y: 190,
+                              }
         
         
-        var hitbox1 = this.game.make.sprite(67, 15, null); // x pos, y pos, sprite name, all relative to player position 
-        var hitbox2 = this.game.make.sprite(57, 89, null);
-        var hitbox3 = this.game.make.sprite(47, 190, null);
-        var hitbox4 = this.game.make.sprite(110, 190, null);
+        var hitbox1 = this.game.make.sprite(p1_hitbox_locations.head_x, p1_hitbox_locations.head_y, null); // x pos, y pos, sprite name, all relative to player position 
+        var hitbox2 = this.game.make.sprite(p1_hitbox_locations.torso_x, p1_hitbox_locations.torso_y, null);
+        var hitbox3 = this.game.make.sprite(p1_hitbox_locations.left_leg_x, p1_hitbox_locations.left_leg_y, null);
+        var hitbox4 = this.game.make.sprite(p1_hitbox_locations.right_leg_x, p1_hitbox_locations.right_leg_y, null);
 
         var punch_hitbox = this.game.make.sprite(p1_attack_hitbox_locations.punch_x, p1_attack_hitbox_locations.punch_y, null);
         var kickright_hitbox = this.game.make.sprite(p1_attack_hitbox_locations.kickright_x, p1_attack_hitbox_locations.kickright_y, null);
@@ -237,10 +249,20 @@ playState.prototype = {
                                         kickright_y: 150,
                                      };
 
-        var hitbox1_2 = this.game.make.sprite(67, 15, null); // x pos, y pos, sprite name, all relative to player position 
-        var hitbox2_2 = this.game.make.sprite(57, 89, null);
-        var hitbox3_2 = this.game.make.sprite(47, 190, null);
-        var hitbox4_2 = this.game.make.sprite(110, 190, null);
+        p2_hitbox_locations = { head_x: 55,
+                                head_y: 12,
+                                torso_x: 57,
+                                torso_y: 89,
+                                left_leg_x: 47,
+                                left_leg_y: 190,
+                                right_leg_x: 110,
+                                right_leg_y: 190,
+                              };
+
+        var hitbox1_2 = this.game.make.sprite(p2_hitbox_locations.head_x, p2_hitbox_locations.head_y, null); // x pos, y pos, sprite name, all relative to player position 
+        var hitbox2_2 = this.game.make.sprite(p2_hitbox_locations.torso_x, p2_hitbox_locations.torso_y, null);
+        var hitbox3_2 = this.game.make.sprite(p2_hitbox_locations.left_leg_x, p2_hitbox_locations.left_leg_y, null);
+        var hitbox4_2 = this.game.make.sprite(p2_hitbox_locations.right_leg_x, p2_hitbox_locations.right_leg_y, null);
 
         var punch_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
         var kickright_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.kickright_x, p2_attack_hitbox_locations.kickright_y, null);
@@ -299,7 +321,7 @@ playState.prototype = {
         player1.animations.add('jumpleft', [19, 20, 21, 22, 23, 24], 5, true);
         player1.animations.add('jumpright', [38, 39, 40, 41, 42, 43], 5, true);
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
-        player1.animations.add('crouch', [31], 5, true);
+        var p1_anim_crouch = player1.animations.add('crouch', [31], 5, true);
         var p1_hit = player1.animations.add('hit', [58], 5, true);
         var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         var p1_anim_kickleft = player1.animations.add('kickleft', [44, 45, 46, 47], 10, false);
@@ -309,7 +331,7 @@ playState.prototype = {
         p1_attack_anim_list.push(p1_anim_kickleft);
         p1_attack_anim_list.push(p1_anim_kickright);
         p1_attack_anim_list.push(p1_hit);
-        //p1_defense_anim_list.push(p1_anim_crouch);
+        p1_defense_anim_list.push(p1_anim_crouch);
 
         player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
         player2.animations.add('backwards', [7, 8, 9, 10, 11, 12], 5, true);
@@ -317,7 +339,7 @@ playState.prototype = {
         player2.animations.add('jumpright', [19, 20, 21, 22, 23, 24], 5, true);
         player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
-        player2.animations.add('crouch', [31], 5, true);
+        var p2_anim_crouch = player2.animations.add('crouch', [31], 5, true);
         var p2_hit = player2.animations.add('hit', [58], 5, true);
         var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         var p2_anim_kickright = player2.animations.add('kickright', [44, 45, 46, 47], 10, false);
@@ -326,7 +348,7 @@ playState.prototype = {
         p2_attack_anim_list.push(p2_anim_punch); // add the rest of p2's attacks here
         p2_attack_anim_list.push(p2_anim_kickright);
         p2_attack_anim_list.push(p2_hit);
-        //p2_defense_anim_list.push(p2_anim_crouch);
+        p2_defense_anim_list.push(p2_anim_crouch);
 
 //        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
 //        player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
@@ -382,13 +404,14 @@ playState.prototype = {
         }
 
         // this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
-        for (var i = 0; i < p1_attack_hitboxes.children.length; i++) {
-
+        for (var i = 0; i < p1_attack_hitboxes.children.length; i++) { // player 2 is attacked
             this.game.physics.arcade.overlap(player2, p1_attack_hitboxes.children[i], overlap, null, this)
-           
+            // for (var j = 0; j < p2_hitboxes.children.length; i++) {
+            //     this.game.physics.arcade.overlap(p2_hitboxes.children[j], p1_attack_hitboxes.children[i], overlap, null, this);
+            // }
             
         }
-        for (var i = 0; i < p2_attack_hitboxes.children.length; i++) {
+        for (var i = 0; i < p2_attack_hitboxes.children.length; i++) { // player 1 is attacked
 
             this.game.physics.arcade.overlap(player1, p2_attack_hitboxes.children[i], overlap, null, this)
            
@@ -428,6 +451,8 @@ playState.prototype = {
                 p1_is_blocking = true;
                 player1.body.velocity.x = 0;
                 player1.animations.play('crouch');
+                disableAllHitboxes('head', p1_hitboxes);
+                console.log('disabled head hitbox for p1');
             }
         else if (qMark.isDown) {
             player1.animations.play('punch');
@@ -467,6 +492,10 @@ playState.prototype = {
             if (player1.body.onFloor() && !p1_attack_isPlaying) {
                 player1.animations.play('idle');
             }
+        }
+
+        if (!isAttackAnimPlaying(p1_defense_anim_list)) {
+            enableAllHitboxes('head', p1_hitboxes, p1_hitbox_locations);
         }
 
         if (cursors.up.isDown && player1.body.onFloor()){
@@ -594,6 +623,8 @@ playState.prototype = {
                 p2_is_blocking = true;
                 player2.body.velocity.x = 0;
                 player2.animations.play('crouch');
+                disableAllHitboxes('head', p2_hitboxes);
+                console.log('disabled head hitbox for p2');
             }
             else if (eButton.isDown) {
                 player2.animations.play('punch');
@@ -621,6 +652,10 @@ playState.prototype = {
                 if (player2.body.onFloor() && !p2_attack_isPlaying) {
                     player2.animations.play('idle');
                 }
+            }
+
+            if (!isAttackAnimPlaying(p2_defense_anim_list)) {
+                enableAllHitboxes('head', p2_hitboxes, p2_hitbox_locations);
             }
 
             if (upButton.isDown && player2.body.onFloor()){
@@ -663,31 +698,31 @@ playState.prototype = {
             return seconds.substr(-2);  
         }
 
-       // this.game.debug.body(player1);
-       // this.game.debug.body(player2);
+       this.game.debug.body(player1);
+       this.game.debug.body(player2);
    
 
          //player 1 body hitboxes   
-//         for(var i = 0; i < p1_hitboxes.children.length; i++){
-//           
-//             this.game.debug.body(p1_hitboxes.children[i]);
-//         }
-//         // player 2 body hitboxes
-//         for(var i = 0; i < p2_hitboxes.children.length; i++){
-//           
-//             this.game.debug.body(p2_hitboxes.children[i]);
-//         }
+        for(var i = 0; i < p1_hitboxes.children.length; i++){
+          
+            this.game.debug.body(p1_hitboxes.children[i]);
+        }
+        // player 2 body hitboxes
+        for(var i = 0; i < p2_hitboxes.children.length; i++){
+          
+            this.game.debug.body(p2_hitboxes.children[i]);
+        }
 //
-//         // player 1 attack hitboxes
-//         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
-//           
-//            this.game.debug.body(p1_attack_hitboxes.children[i]);
-//         }
-//         // player2 attack hitboxes
-//         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
-//           
-//            this.game.debug.body(p2_attack_hitboxes.children[i]);
-//         }
+        // player 1 attack hitboxes
+        for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
+          
+           this.game.debug.body(p1_attack_hitboxes.children[i]);
+        }
+        // player2 attack hitboxes
+        for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
+          
+           this.game.debug.body(p2_attack_hitboxes.children[i]);
+        }
 //
 //        
        // this.game.debug.body(p1_lasers_hitbox);
@@ -729,9 +764,13 @@ function enableAllHitboxes(hitboxName, hitboxGroup, hitboxGroupLocations) {
 
             var x_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_x"]
             var y_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_y"]
-
+            // console.log(hitboxGroup.parent);
+            if (hitboxName == 'head') {
+                x_pos += hitboxGroup.parent.x;
+                y_pos += hitboxGroup.parent.y;
+            }
             hitboxGroup.children[i].reset(x_pos, y_pos);
-            console.log('enabled hitbox for ' + hitboxName);
+            // console.log('enabled hitbox for ' + hitboxName);
         }
     }
     // console.log('enabled hitboxes for ' + hitboxName);
@@ -743,6 +782,7 @@ function disableAllHitboxes(hitboxName, hitboxGroup) {
         if (hitboxGroup.children[i].name == hitboxName) {
 
             hitboxGroup.children[i].reset(0,0); // reset location of sprite to be off screen
+            hitboxGroup.children[i].alive = false;
             hitboxGroup.children[i].kill();
             // console.log('killed some child');
         }
@@ -755,21 +795,28 @@ function endTimer() {
 }
 
 
-function overlap(player1, attack_hitbox) {
-    var p1_multiplier = .25;
+function overlap(player_attacked, attack_hitbox) {
+    var blocking_multiplier = .25;
     if (this.game.time.now > this.invincibleTimer) {
-            
+            // var player_attacked = player_hitbox.parent.parent; 
+
             if (attack_hitbox.name == 'laser') {
                 var laser = attack_hitbox.parent; // get the parent of the laser's attack hitbox, which needs to be killed
                 resetLaser(laser);
+                console.log('laser hit hitbox');
+
             }
-            if (p1_is_blocking){
+            if (player_attacked == player1 && p1_is_blocking){
                 console.log('p1 blocking');
-                player1.health = player1.health - (attack_hitbox.damage * p1_multiplier); //chip damage for blocking
+                player_attacked.health = player_attacked.health - (attack_hitbox.damage * blocking_multiplier); //chip damage for blocking
+            }
+            else if (player_attacked == player2 && p2_is_blocking) {
+                console.log('p2 blocking');
+                player_attacked.health = player_attacked.health - (attack_hitbox.damage * blocking_multiplier); //chip damage for blocking   
             }
             else{
     
-                player1.health = player1.health - attack_hitbox.damage;
+                player_attacked.health = player_attacked.health - attack_hitbox.damage;
             }
             this.invincibleTimer = this.game.time.now + 500;
         //player1.animations.play('hit');
