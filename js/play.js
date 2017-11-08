@@ -324,7 +324,7 @@ playState.prototype = {
         player1.animations.add('jumpright', [38, 39, 40, 41, 42, 43], 5, true);
         player1.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         var p1_anim_crouch = player1.animations.add('crouch', [31], 5, true);
-        var p1_hit = player1.animations.add('hit', [58], 5, true);
+        var p1_hit = player1.animations.add('hit', [58], 5, false);
         var p1_anim_punch = player1.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         var p1_anim_kickleft = player1.animations.add('kickleft', [44, 45, 46, 47], 10, false);
         var p1_anim_kickright = player1.animations.add('kickright', [54, 55, 56, 57], 10, false);
@@ -342,7 +342,7 @@ playState.prototype = {
         player2.animations.add('jumpleft', [38, 39, 40, 41, 42, 43], 5, true);
         player2.animations.add('shoruken', [25, 26, 27, 28, 29, 30], 7, false);
         var p2_anim_crouch = player2.animations.add('crouch', [31], 5, true);
-        var p2_hit = player2.animations.add('hit', [58], 5, true);
+        var p2_hit = player2.animations.add('hit', [58], 5, false);
         var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
         var p2_anim_kickright = player2.animations.add('kickright', [44, 45, 46, 47], 10, false);
         
