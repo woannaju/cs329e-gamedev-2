@@ -75,6 +75,7 @@ playState.prototype = {
 //initializing defense
         player1.isHeadDisabled = false;
         player2.isHeadDisabled = false;
+        
 //initialize laser  
         laser1 = this.game.add.sprite(0, 0, 'laser'); // laser for p1
         laser1.alive = false;
@@ -466,13 +467,11 @@ playState.prototype = {
                 p1_is_blocking = true;
                 player1.body.velocity.x = 0;
                 player1.animations.play('crouch');
-                console.log(player1.isHeadDisabled);
-                if (player1.isHeadDisabled != true){
+                if (player1.isHeadDisabled == false){
                     disableAllHitboxes('head', p1_hitboxes);
-                    player1.isHeadDisabled == true;
-                    console.log(player1.isHeadDisabled);
-                    //console.log('disabled head hitbox for p1');
-                    console.log('2');
+                    player1.isHeadDisabled = true;
+                    console.log('disabled head hitbox for p1');
+                    //console.log('2');
                 }
                 
             }
@@ -519,7 +518,7 @@ playState.prototype = {
         if (!isAttackAnimPlaying(p1_defense_anim_list)) {
             if (player1.isHeadDisabled == true){
                 enableAllHitboxes('head', p1_hitboxes, p1_hitbox_locations);
-                player1.isHeadDisabled == false;
+                player1.isHeadDisabled = false;
                 console.log('enable head hitbox for p1');
             }
             
@@ -652,7 +651,7 @@ playState.prototype = {
                 player2.animations.play('crouch');
                  if (player2.isHeadDisabled != true){
                     disableAllHitboxes('head', p2_hitboxes);
-                    player2.isHeadDisabled == true;
+                    player2.isHeadDisabled = true;
                     console.log('disabled head hitbox for p2');
                 }
                 
@@ -688,7 +687,7 @@ playState.prototype = {
             if (!isAttackAnimPlaying(p2_defense_anim_list)) {
                 if (player2.isHeadDisabled == true){
                     enableAllHitboxes('head', p2_hitboxes, p2_hitbox_locations);
-                    player2.isHeadDisabled == false;
+                    player2.isHeadDisabled = false;
                     console.log('enable head hitbox for p2');
             }
             }
