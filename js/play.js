@@ -414,11 +414,13 @@ playState.prototype = {
             
         }
         for (var i = 0; i < p2_attack_hitboxes.children.length; i++) { // player 1 is attacked
-
             for (var j = 0; j < p1_hitboxes.children.length; j++) {
                 this.game.physics.arcade.overlap(p1_hitboxes.children[j], p2_attack_hitboxes.children[i], overlap, null, this);
             }           
         }
+
+
+
         for (var i = 0; i < p2_hitboxes.children.length; i++) {
             this.game.physics.arcade.overlap(p2_hitboxes.children[i], p1_lasers_hitbox, overlap, null, this);
         }
@@ -812,7 +814,7 @@ function endTimer() {
 
 function overlap(player_hitbox, attack_hitbox) {
     var blocking_multiplier = .25;
-    if (this.game.time.now > this.invincibleTimer) {
+    if (this.game.time.now > this.invincibleTimer && (htp.exists == false)) {
             // console.log(attack_hitbox.parent.name);
             // console.log(attack_hitbox.parent.parent.name);
             // console.log(attack_hitbox.parent.parent.parent.name);
