@@ -67,7 +67,7 @@ playState.prototype = {
         //timer.start();
 
 //initialize character sprites
-        player2 = this.game.add.sprite(500, 400, 'ryu');
+        player2 = this.game.add.sprite(50, 400, 'ryu');
         player1 = this.game.add.sprite(850, 400, 'ken');
         player2.name = 'ryu';
         player1.name = 'ken';
@@ -377,7 +377,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        player2.health = 100;
+        player2.health = 115; // *** change back to 100 later
         player2.maxHealth = 100;
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
         this.healthMeterBar.bar(player2, {
@@ -708,31 +708,31 @@ playState.prototype = {
             return seconds.substr(-2);  
         }
 
-       this.game.debug.body(player1);
-       this.game.debug.body(player2);
+       // this.game.debug.body(player1);
+       // this.game.debug.body(player2);
    
 
-         //player 1 body hitboxes   
-        for(var i = 0; i < p1_hitboxes.children.length; i++){
+//          //player 1 body hitboxes   
+//         for(var i = 0; i < p1_hitboxes.children.length; i++){
           
-            this.game.debug.body(p1_hitboxes.children[i]);
-        }
-        // player 2 body hitboxes
-        for(var i = 0; i < p2_hitboxes.children.length; i++){
+//             this.game.debug.body(p1_hitboxes.children[i]);
+//         }
+//         // player 2 body hitboxes
+//         for(var i = 0; i < p2_hitboxes.children.length; i++){
           
-            this.game.debug.body(p2_hitboxes.children[i]);
-        }
-//
-        // player 1 attack hitboxes
-        for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
+//             this.game.debug.body(p2_hitboxes.children[i]);
+//         }
+// //
+//         // player 1 attack hitboxes
+//         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
           
-           this.game.debug.body(p1_attack_hitboxes.children[i]);
-        }
-        // player2 attack hitboxes
-        for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
+//            this.game.debug.body(p1_attack_hitboxes.children[i]);
+//         }
+//         // player2 attack hitboxes
+//         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
           
-           this.game.debug.body(p2_attack_hitboxes.children[i]);
-        }
+//            this.game.debug.body(p2_attack_hitboxes.children[i]);
+//         }
 //
 //        
        // this.game.debug.body(p1_lasers_hitbox);
