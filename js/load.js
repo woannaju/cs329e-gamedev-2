@@ -14,6 +14,10 @@ var loadState = {
         this.game.load.spritesheet('ken', 'assets/robot_enemy_200x316.png', 200, 316);
         this.game.load.audio('boden', ['assets/audio/bodenstaendig_2000_in_rock_4bit.mp3', 'assets/audio/bodenstaendig_2000_in_rock_4bit.ogg']);
         this.game.load.audio('menu_music', ['assets/audio/oedipus_wizball_highscore.mp3', 'assets/audio/oedipus_wizball_highscore.ogg']);
+        this.game.load.audio('punch_sound', 'assets/audio/punching_sound.mp3');
+        this.game.load.audio('kick_sound', 'assets/audio/kicking_sound.mp3');
+        this.game.load.audio('laser_sound', 'assets/audio/laser_sound.mp3');
+        this.game.load.audio('block_sound', 'assets/audio/blocking_sound.mp3');
     },
 
     create: function()
