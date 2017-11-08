@@ -69,6 +69,8 @@ playState.prototype = {
 //initialize character sprites
         player2 = this.game.add.sprite(500, 400, 'ryu');
         player1 = this.game.add.sprite(850, 400, 'ken');
+        player2.name = 'ryu';
+        player1.name = 'ken';
 
 //initialize laser  
         laser1 = this.game.add.sprite(0, 0, 'laser'); // laser for p1
@@ -388,6 +390,8 @@ playState.prototype = {
 
         cpu_ai = false; // boolean that determines if cpu ai takes over player 2 or not
         move_backwards = false;
+        p1_is_blocking = false;
+        p2_is_blocking = false;
         
         
         htp = this.game.add.sprite(0,0,'howtoplay');
@@ -403,22 +407,28 @@ playState.prototype = {
             timer.start();
         }
 
-        // this.game.physics.arcade.overlap(p1_hitboxes, player2, overlap, null, this);
         for (var i = 0; i < p1_attack_hitboxes.children.length; i++) { // player 2 is attacked
-            this.game.physics.arcade.overlap(player2, p1_attack_hitboxes.children[i], overlap, null, this)
-            // for (var j = 0; j < p2_hitboxes.children.length; i++) {
-            //     this.game.physics.arcade.overlap(p2_hitboxes.children[j], p1_attack_hitboxes.children[i], overlap, null, this);
-            // }
+            for (var j = 0; j < p2_hitboxes.children.length; j++) {
+                this.game.physics.arcade.overlap(p2_hitboxes.children[j], p1_attack_hitboxes.children[i], overlap, null, this);
+            }
             
         }
         for (var i = 0; i < p2_attack_hitboxes.children.length; i++) { // player 1 is attacked
 
-            this.game.physics.arcade.overlap(player1, p2_attack_hitboxes.children[i], overlap, null, this)
-           
+            for (var j = 0; j < p1_hitboxes.children.length; j++) {
+                this.game.physics.arcade.overlap(p1_hitboxes.children[j], p2_attack_hitboxes.children[i], overlap, null, this);
+            }           
+        }
+        for (var i = 0; i < p2_hitboxes.children.length; i++) {
+            this.game.physics.arcade.overlap(p2_hitboxes.children[i], p1_lasers_hitbox, overlap, null, this);
+        }
+        for (var i = 0; i < p1_hitboxes.children.length; i++) {
+            this.game.physics.arcade.overlap(p1_hitboxes.children[i], p2_lasers_hitbox, overlap, null, this);
         }
 
-        this.game.physics.arcade.overlap(player2, p1_lasers_hitbox, overlap, null, this);
-        this.game.physics.arcade.overlap(player1, p2_lasers_hitbox, overlap, null, this);
+
+        // this.game.physics.arcade.overlap(player2, p1_lasers_hitbox, overlap, null, this);
+        // this.game.physics.arcade.overlap(player1, p2_lasers_hitbox, overlap, null, this);
         // this.game.physics.arcade.overlap(p1_attack_hitboxes, player2, overlap, null, this);
         // this.game.physics.arcade.overlap(p2_attack_hitboxes, player1, overlap, null, this);
 
@@ -782,7 +792,7 @@ function disableAllHitboxes(hitboxName, hitboxGroup) {
         if (hitboxGroup.children[i].name == hitboxName) {
 
             hitboxGroup.children[i].reset(0,0); // reset location of sprite to be off screen
-            hitboxGroup.children[i].alive = false;
+            // hitboxGroup.children[i].alive = false;
             hitboxGroup.children[i].kill();
             // console.log('killed some child');
         }
@@ -795,15 +805,20 @@ function endTimer() {
 }
 
 
-function overlap(player_attacked, attack_hitbox) {
+function overlap(player_hitbox, attack_hitbox) {
     var blocking_multiplier = .25;
     if (this.game.time.now > this.invincibleTimer) {
-            // var player_attacked = player_hitbox.parent.parent; 
+            // console.log(attack_hitbox.parent.name);
+            // console.log(attack_hitbox.parent.parent.name);
+            // console.log(attack_hitbox.parent.parent.parent.name);
+            var player_attacked = player_hitbox.parent.parent; 
 
             if (attack_hitbox.name == 'laser') {
                 var laser = attack_hitbox.parent; // get the parent of the laser's attack hitbox, which needs to be killed
-                resetLaser(laser);
-                console.log('laser hit hitbox');
+                if (laser != null) {
+                    resetLaser(laser);
+                    console.log('laser hit hitbox');
+                }
 
             }
             if (player_attacked == player1 && p1_is_blocking){
