@@ -325,6 +325,8 @@ playState.prototype = {
         p2_lasers_hitbox.body.moves = false;
 
         this.invincibleTimer = 0;
+        p1_invincibleTimer = 0;
+        p2_invincibleTimer = 0;
         this.cpuTimer = 0;
 
         player1.animations.add('idle', [0, 1, 2, 3, 4, 5, 6], 5, true);
@@ -877,7 +879,12 @@ function overlap(player_hitbox, attack_hitbox) {
     
                 player_attacked.health = player_attacked.health - attack_hitbox.damage;
             }
-            this.invincibleTimer = this.game.time.now + 500;
+            if (player_attacked == player1){
+                p2_invincibleTimer = this.game.time.now + 500;
+            }
+            if (player_attacked == player2){
+                p1_invincibleTimer = this.game.time.now + 500;
+            }
         //player1.animations.play('hit');
         }
     
