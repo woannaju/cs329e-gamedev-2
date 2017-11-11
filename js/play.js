@@ -528,11 +528,11 @@ playState.prototype = {
         }
 
         if (!isAttackAnimPlaying(p1_defense_anim_list)) {
-            if (player1.isHeadDisabled == true){
-                enableAllHitboxes('head', p1_hitboxes, p1_hitbox_locations);
-                player1.isHeadDisabled = false;
-                console.log('enable head hitbox for p1');
-            }
+            //if (player1.isHeadDisabled == true){
+            enableAllHitboxes('head', p1_hitboxes, p1_hitbox_locations);
+            player1.isHeadDisabled = false;
+            //console.log('enable head hitbox for p1');
+            //}
             
         }
 
@@ -699,11 +699,11 @@ playState.prototype = {
             }
 
             if (!isAttackAnimPlaying(p2_defense_anim_list)) {
-                if (player2.isHeadDisabled == true){
-                    enableAllHitboxes('head', p2_hitboxes, p2_hitbox_locations);
-                    player2.isHeadDisabled = false;
-                    console.log('enable head hitbox for p2');
-            }
+                //if (player2.isHeadDisabled == true){
+                enableAllHitboxes('head', p2_hitboxes, p2_hitbox_locations);
+                player2.isHeadDisabled = false;
+                //console.log('enable head hitbox for p2');
+                //}
             }
 
             if (upButton.isDown && player2.body.onFloor()){
