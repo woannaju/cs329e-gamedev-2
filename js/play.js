@@ -389,7 +389,7 @@ playState.prototype = {
                 alpha: 0.6
             });
 
-        player2.health = 115; // *** change back to 100 later
+        player2.health = 100; 
         player2.maxHealth = 100;
         this.healthMeterBar = this.game.add.plugin(Phaser.Plugin.HealthMeter);
         this.healthMeterBar.bar(player2, {
