@@ -866,10 +866,12 @@ function overlap(player_hitbox, attack_hitbox) {
             if (player_attacked == player1 && p1_is_blocking){
                 console.log('p1 blocking');
                 player_attacked.health = player_attacked.health - (attack_hitbox.damage * blocking_multiplier); //chip damage for blocking
+                blocking_sound.play();
             }
             else if (player_attacked == player2 && p2_is_blocking) {
                 console.log('p2 blocking');
-                player_attacked.health = player_attacked.health - (attack_hitbox.damage * blocking_multiplier); //chip damage for blocking   
+                player_attacked.health = player_attacked.health - (attack_hitbox.damage * blocking_multiplier); //chip damage for blocking 
+                blocking_sound.play(); 
             }
             else{
     
