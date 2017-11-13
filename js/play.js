@@ -758,23 +758,23 @@ playState.prototype = {
 
 //          //player 1 body hitboxes   
 //         for(var i = 0; i < p1_hitboxes.children.length; i++){
-          
+//          
 //             this.game.debug.body(p1_hitboxes.children[i]);
 //         }
 //         // player 2 body hitboxes
 //         for(var i = 0; i < p2_hitboxes.children.length; i++){
-          
+//          
 //             this.game.debug.body(p2_hitboxes.children[i]);
 //         }
 // //
 //         // player 1 attack hitboxes
 //         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
-          
+//          
 //            this.game.debug.body(p1_attack_hitboxes.children[i]);
 //         }
 //         // player2 attack hitboxes
 //         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
-          
+//          
 //            this.game.debug.body(p2_attack_hitboxes.children[i]);
 //         }
 //
@@ -851,42 +851,49 @@ function endTimer() {
 
 function overlap(player_hitbox, attack_hitbox) {
     var blocking_multiplier = .25;
-    if (this.game.time.now > this.invincibleTimer && (htp.exists == false)) {
-            // console.log(attack_hitbox.parent.name);
-            // console.log(attack_hitbox.parent.parent.name);
-            // console.log(attack_hitbox.parent.parent.parent.name);
-            var player_attacked = player_hitbox.parent.parent; 
-
+    var player_attacked = player_hitbox.parent.parent;
+    if (player_attacked == player1) {
+        if (this.game.time.now > p2_invincibleTimer && (htp.exists == false)) {
+                if (attack_hitbox.name == 'laser') {
+                    var laser = attack_hitbox.parent; // get the parent of the laser's attack hitbox, which needs to be killed
+                    if (laser != null) {
+                        resetLaser(laser);
+                        console.log('laser hit hitbox');
+                    }
+                }
+                if (p1_is_blocking){
+                    console.log('p1 blocking');
+                    player_attacked.health = player_attacked.health - (attack_hitbox.damage * blocking_multiplier); //chip damage for blocking
+                    blocking_sound.play();
+                }
+                else{
+                    player_attacked.health = player_attacked.health - attack_hitbox.damage;
+                }
+            p2_invincibleTimer = this.game.time.now + 500;
+            console.log("hit player1");
+        }
+    }
+    else {
+        if (this.game.time.now > p1_invincibleTimer && (htp.exists == false)) {
             if (attack_hitbox.name == 'laser') {
                 var laser = attack_hitbox.parent; // get the parent of the laser's attack hitbox, which needs to be killed
                 if (laser != null) {
                     resetLaser(laser);
                     console.log('laser hit hitbox');
                 }
-
             }
-            if (player_attacked == player1 && p1_is_blocking){
-                console.log('p1 blocking');
-                player_attacked.health = player_attacked.health - (attack_hitbox.damage * blocking_multiplier); //chip damage for blocking
-                blocking_sound.play();
-            }
-            else if (player_attacked == player2 && p2_is_blocking) {
+            if (p2_is_blocking) {
                 console.log('p2 blocking');
                 player_attacked.health = player_attacked.health - (attack_hitbox.damage * blocking_multiplier); //chip damage for blocking 
                 blocking_sound.play(); 
             }
             else{
-    
                 player_attacked.health = player_attacked.health - attack_hitbox.damage;
             }
-            if (player_attacked == player1){
-                p2_invincibleTimer = this.game.time.now + 500;
-            }
-            if (player_attacked == player2){
-                p1_invincibleTimer = this.game.time.now + 500;
-            }
-        //player1.animations.play('hit');
-        }
+        p1_invincibleTimer = this.game.time.now + 500;
+        console.log("hit player 2");        
+        }      
+    }
     
 
     if (player1.health <= 0 || player2.health <= 0) {
@@ -894,7 +901,7 @@ function overlap(player_hitbox, attack_hitbox) {
         this.game.state.start('end')
     }
     //player1.health = player1.health -10;
-    console.log('hit player 2');
+    //console.log('hit player 2');
 }
 
 function attackAnimStarted(sprite, animation) {
