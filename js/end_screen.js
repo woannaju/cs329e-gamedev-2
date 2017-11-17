@@ -1,4 +1,18 @@
-var end_screen = {
+var end_screen = function(game){
+
+    
+}
+
+var loser;
+var winner;
+
+end_screen.prototype = {
+
+    init: function(losing_player, winning_player) {
+        loser = losing_player;
+        winner = winning_player;
+    },
+
     preload: function() {
         this.game.load.image('dark_bg', 'assets/Dark_background.jpg');
 
@@ -10,8 +24,8 @@ var end_screen = {
         var style1 = { font: "48px Arial", fill: "#ffffff", align: "center" };
         var style2 = { font: "24px Arial", fill: "#ffffff", align: "center" };
 
-
-        var screenText1 = this.game.add.text(this.game.world.centerX, this.game.world.centerY, 'Game Over', style1);
+        var victor_text = winner.name + ' wins!'
+        var screenText1 = this.game.add.text(this.game.world.centerX, this.game.world.centerY, victor_text, style1);
         screenText1.anchor.set(0.5);
         // screenText1.addColor('#ffff00', 16);
 

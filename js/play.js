@@ -892,10 +892,13 @@ function overlap(player_hitbox, attack_hitbox) {
         }      
     }
     
-
-    if (player1.health <= 0 || player2.health <= 0) {
+    if (player1.health <= 0) {
         music.stop();
-        this.game.state.start('end')
+        this.game.state.start('end', true, false, player1, player2); // player 1 lost, player 2 wins
+    }
+    else if (player2.health <= 0) {
+        music.stop();
+        this.game.state.start('end', true, false, player2, player1); // player 2 wins, player 1 lost
     }
     //player1.health = player1.health -10;
     //console.log('hit player 2');
