@@ -1,5 +1,4 @@
 var end_screen = function(game){
-
     
 }
 

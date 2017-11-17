@@ -900,6 +900,19 @@ function overlap(player_hitbox, attack_hitbox) {
         music.stop();
         this.game.state.start('end', true, false, player2, player1); // player 2 wins, player 1 lost
     }
+    if (timer.running == false && htp.exists == false){
+        music.stop();
+        if(player1.health > player2.health) {
+            this.game.state.start('end', true, false, player2, player1);
+        }
+        else if (player2.health > player1.health) {
+            this.game.state.start('end', true, false, player1, player2);
+        }
+        else {
+            this.game.state.start('end');
+        }
+    }
+    
     //player1.health = player1.health -10;
     //console.log('hit player 2');
 }
