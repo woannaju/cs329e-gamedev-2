@@ -447,11 +447,6 @@ playState.prototype = {
         // this.game.physics.arcade.overlap(p2_attack_hitboxes, player1, overlap, null, this);
 
         //player1 controls
-        if(isAttackAnimPlaying(p2_attack_anim_list) == true && this.game.physics.arcade.overlap(player1, p2_attack_hitboxes.children) == true ){
-            console.log('hit');
-            player1.animations.play('hit');
-//                player1.animations.play('hit');
-            }
         if (cursors.left.isDown && cursors.right.isDown) {
                 player1.animations.play('shoruken');
             }
@@ -636,10 +631,6 @@ playState.prototype = {
         }  
         else {
         //player2 controls
-            if(isAttackAnimPlaying(p1_attack_anim_list) == true && this.game.physics.arcade.overlap(player2, p1_attack_hitboxes.children) == true ){
-                console.log('hit');
-                player2.animations.play('hit');
-            }
             if (leftButton.isDown && rightButton.isDown) {
                     player2.animations.play('shoruken');
                 }
@@ -852,8 +843,11 @@ function endTimer() {
 function overlap(player_hitbox, attack_hitbox) {
     var blocking_multiplier = .25;
     var player_attacked = player_hitbox.parent.parent;
-    if (player_attacked == player1) {
+    if (player_attacked == player1) { // player 1 hit
         if (this.game.time.now > p2_invincibleTimer && (htp.exists == false)) {
+                console.log('hit anim play');
+                player_attacked.animations.play('hit'); // play hit animation since player 1 is hit
+               
                 if (attack_hitbox.name == 'laser') {
                     var laser = attack_hitbox.parent; // get the parent of the laser's attack hitbox, which needs to be killed
                     if (laser != null) {
@@ -873,8 +867,11 @@ function overlap(player_hitbox, attack_hitbox) {
             console.log("hit player1");
         }
     }
-    else {
+    else { // player 2 hit
         if (this.game.time.now > p1_invincibleTimer && (htp.exists == false)) {
+
+            player_attacked.animations.play('hit'); // play hit animation since player 1 is hit
+
             if (attack_hitbox.name == 'laser') {
                 var laser = attack_hitbox.parent; // get the parent of the laser's attack hitbox, which needs to be killed
                 if (laser != null) {
