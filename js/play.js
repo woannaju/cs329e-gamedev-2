@@ -810,12 +810,19 @@ function enableAllHitboxes(hitboxName, hitboxGroup, hitboxGroupLocations) {
             var x_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_x"]
             var y_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_y"]
             // console.log(hitboxGroup.parent);
-            if (hitboxName == 'head') {
-                x_pos += hitboxGroup.parent.x;
-                y_pos += hitboxGroup.parent.y;
-            }
+            // if (hitboxName == 'head') {
+            //     x_pos += hitboxGroup.parent.x;
+            //     y_pos += hitboxGroup.parent.y;
+            // }
+            x_pos += hitboxGroup.parent.x;
+            y_pos += hitboxGroup.parent.y;
             hitboxGroup.children[i].reset(x_pos, y_pos);
-            // console.log('enabled hitbox for ' + hitboxName);
+
+            if (hitboxName != 'head') {
+                console.log('enabled hitbox for ' + hitboxName);
+                console.log(hitboxGroup.children[i].position);
+                console.log(hitboxGroup.children[i].worldPosition);
+            }
         }
     }
     // console.log('enabled hitboxes for ' + hitboxName);
