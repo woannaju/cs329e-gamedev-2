@@ -59,6 +59,9 @@ playState.prototype = {
         console.log('create called');
     	this.game.physics.startSystem(Phaser.Physics.ARCADE);
     	bg = this.game.add.sprite(70,0,'boxingring');
+        var nameStyle = { font: "28px Bebas Neue", fill: "#ffffff", align: "center" }
+        var nameText1 = this.game.add.text(840, 65, 'Player 1', nameStyle);
+        var nameText2 = this.game.add.text(108, 65, 'Player 2', nameStyle);
         
 //initialize timer
         timer = this.game.time.create();
@@ -69,8 +72,8 @@ playState.prototype = {
 //initialize character sprites
         player2 = this.game.add.sprite(50, 400, 'ryu');
         player1 = this.game.add.sprite(850, 400, 'ken');
-        player2.name = 'ryu';
-        player1.name = 'ken';
+        player2.name = 'Player 2';
+        player1.name = 'Player 1';
 
 //initializing defense
         player1.isHeadDisabled = false;
@@ -726,12 +729,24 @@ playState.prototype = {
         if(timer.running) {
             this.game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 483, 60, "#ffb64d", '60px ScriptoramaMarkdownJF');
         }
-        else {
-            if(htp.exists == false){
-                music.stop();
+        else if(timer.running == false && htp.exists == false){
+            music.stop();
+            if(player1.health > player2.health) {
+                this.game.state.start('end', true, false, player2, player1);
+            }
+            else if (player2.health > player1.health) {
+                this.game.state.start('end', true, false, player1, player2);
+            }
+            else {
                 this.game.state.start('end');
             }
-        }
+    }
+//        else {
+//            if(htp.exists == false){
+//                music.stop();
+//                this.game.state.start('end');
+//            }
+//        }
 //        else {
 //            this.game.debug.text("End of Round", 200, 250, "#ffb64d", '100px ScriptoramaMarkdownJF');
 //            //send to endState Winner/loser/sudden death
