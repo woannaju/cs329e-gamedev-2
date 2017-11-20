@@ -51,6 +51,7 @@ playState.prototype = {
         zButton = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
         commaButton = this.game.input.keyboard.addKey(Phaser.Keyboard.COMMA);
         space = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        tabButton = this.game.input.keyboard.addKey(Phaser.Keyboard.TAB);
     },
 
 //Initializing sprites and sized
@@ -262,6 +263,8 @@ playState.prototype = {
                                         punch_y: 93,
                                         kickright_x: 135,
                                         kickright_y: 150,
+                                        kickleft_x: 0,
+                                        kickleft_y: 150,
                                      };
 
         p2_hitbox_locations = { head_x: 55,
@@ -281,7 +284,7 @@ playState.prototype = {
 
         var punch_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
         var kickright_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.kickright_x, p2_attack_hitbox_locations.kickright_y, null);
-
+        var kickleft_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.kickleft_x, p2_attack_hitbox_locations.kickleft_y, null);
         p2_lasers_hitbox.name = 'laser';
 
         p2_hitboxes.add(hitbox1_2);
@@ -291,6 +294,7 @@ playState.prototype = {
 
         p2_attack_hitboxes.add(punch_hitbox_2);
         p2_attack_hitboxes.add(kickright_hitbox_2);
+        p2_attack_hitboxes.add(kickleft_hitbox_2);
 
         hitbox1_2.name = 'head';
         hitbox2_2.name = 'torso';
@@ -299,9 +303,11 @@ playState.prototype = {
 
         punch_hitbox_2.name = 'punch';
         kickright_hitbox_2.name = 'kickright';
+        kickleft_hitbox_2.name = 'kickleft';
 
         punch_hitbox_2.damage = 20;
         kickright_hitbox_2.damage = 10;
+        kickleft_hitbox_2.damage = 10;
         p2_lasers_hitbox.damage = 15;
 
         hitbox1_2.body.setSize(50,50,0,0); // size of sprite: width, height, offset width, offset height
@@ -313,6 +319,7 @@ playState.prototype = {
 
         punch_hitbox_2.body.setSize(35,17,0,0);
         kickright_hitbox_2.body.setSize(50,20,0,0);
+        kickleft_hitbox_2.body.setSize(50,20,0,0);
 
 
         p2_hitboxes.forEachExists(function(hitbox) {   // hitboxes follow player properly by setting sprite.body.moves = false (not same as immovable)
@@ -359,13 +366,15 @@ playState.prototype = {
         var p2_anim_crouch = player2.animations.add('crouch', [31], 5, true);
         var p2_hit = player2.animations.add('hit', [58], 5, false);
         var p2_anim_punch = player2.animations.add('punch', [32, 33, 34, 36, 0], 10, false);
+        var p2_anim_kickleft = player2.animations.add('kickleft', [54, 55, 56, 57], 10, false);
         var p2_anim_kickright = player2.animations.add('kickright', [44, 45, 46, 47], 10, false);
-        
-        
+
         p2_attack_anim_list.push(p2_anim_punch); // add the rest of p2's attacks here
         p2_attack_anim_list.push(p2_anim_kickright);
         p2_attack_anim_list.push(p2_hit);
+        p2_attack_anim_list.push(p2_anim_kickleft);
         p2_defense_anim_list.push(p2_anim_crouch);
+
 
 //        player2.animations.add('idle', [0, 1, 2, 3, 4, 5, 6, 7, 8], 5, true);
 //        player2.animations.add('backwards', [10, 11, 12, 13, 14], 5, true);
@@ -680,6 +689,15 @@ playState.prototype = {
                     }
                 }
             }
+            else if (tabButton.isDown) {
+                player2.animations.play('kickleft');
+                kicking_sound.play();
+                for(var i = 0; i < p2_attack_anim_list.length; i++) {
+                    if (p2_attack_anim_list[i].name == 'kickleft') {
+                        attackAnimStarted(player2, p2_attack_anim_list[i])
+                    }
+                }
+            }
             else if (zButton.isDown) {
                 fireLaser(player2);
             }
@@ -773,17 +791,17 @@ playState.prototype = {
 //             this.game.debug.body(p2_hitboxes.children[i]);
 //         }
 // //
-//         // player 1 attack hitboxes
-//         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
-//          
-//            this.game.debug.body(p1_attack_hitboxes.children[i]);
-//         }
-//         // player2 attack hitboxes
-//         for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
-//          
-//            this.game.debug.body(p2_attack_hitboxes.children[i]);
-//         }
-//
+        // player 1 attack hitboxes
+        for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
+         
+           this.game.debug.body(p1_attack_hitboxes.children[i]);
+        }
+        // player2 attack hitboxes
+        for(var i = 0; i < p2_attack_hitboxes.children.length; i++){
+         
+           this.game.debug.body(p2_attack_hitboxes.children[i]);
+        }
+
 //        
        // this.game.debug.body(p1_lasers_hitbox);
        // this.game.debug.body(p2_lasers_hitbox);
