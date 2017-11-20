@@ -158,11 +158,11 @@ playState.prototype = {
         p1_lasers.setAll('checkWorldBounds', true);
 
         p1_attack_hitbox_locations = {  punch_x: 7,
-                                        punch_y: 93,
-                                        kickright_x: 135,
-                                        kickright_y: 150,
+                                        punch_y: 77,
+                                        kickright_x: 110,
+                                        kickright_y: 125,
                                         kickleft_x: 0,
-                                        kickleft_y: 150,
+                                        kickleft_y: 125,
                                      };
 
         p1_hitbox_locations = { head_x: 55,
@@ -215,7 +215,7 @@ playState.prototype = {
         hitbox3.body.setSize(35,90,0,0);
         hitbox4.body.setSize(35,90,0,0);
 
-        punch_hitbox.body.setSize(35,17,0,0);
+        punch_hitbox.body.setSize(40,17,0,0);
         kickright_hitbox.body.setSize(50,20,0,0);
         kickleft_hitbox.body.setSize(50,20,0,0);
 
@@ -259,12 +259,12 @@ playState.prototype = {
         p2_lasers.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', resetLaser);
         p2_lasers.setAll('checkWorldBounds', true);
 
-        p2_attack_hitbox_locations = {  punch_x: 122,
-                                        punch_y: 93,
-                                        kickright_x: 135,
-                                        kickright_y: 150,
+        p2_attack_hitbox_locations = {  punch_x: 93,
+                                        punch_y: 77,
+                                        kickright_x: 110,
+                                        kickright_y: 125,
                                         kickleft_x: 0,
-                                        kickleft_y: 150,
+                                        kickleft_y: 125,
                                      };
 
         p2_hitbox_locations = { head_x: 55,
@@ -285,7 +285,6 @@ playState.prototype = {
         var punch_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.punch_x, p2_attack_hitbox_locations.punch_y, null);
         var kickright_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.kickright_x, p2_attack_hitbox_locations.kickright_y, null);
         var kickleft_hitbox_2 = this.game.make.sprite(p2_attack_hitbox_locations.kickleft_x, p2_attack_hitbox_locations.kickleft_y, null);
-        p2_lasers_hitbox.name = 'laser';
 
         p2_hitboxes.add(hitbox1_2);
         p2_hitboxes.add(hitbox2_2);
@@ -304,6 +303,7 @@ playState.prototype = {
         punch_hitbox_2.name = 'punch';
         kickright_hitbox_2.name = 'kickright';
         kickleft_hitbox_2.name = 'kickleft';
+        p2_lasers_hitbox.name = 'laser';
 
         punch_hitbox_2.damage = 20;
         kickright_hitbox_2.damage = 10;
@@ -317,7 +317,7 @@ playState.prototype = {
 
         p2_lasers_hitbox.body.setSize(65,16,0,0);
 
-        punch_hitbox_2.body.setSize(35,17,0,0);
+        punch_hitbox_2.body.setSize(40,17,0,0);
         kickright_hitbox_2.body.setSize(50,20,0,0);
         kickleft_hitbox_2.body.setSize(50,20,0,0);
 
