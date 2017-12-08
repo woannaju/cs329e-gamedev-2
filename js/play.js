@@ -453,6 +453,30 @@ playState.prototype = {
         }
 
 
+
+        if (player1.health <= 0) {
+            music.stop();
+            this.game.state.start('end', true, false, player1, player2); // player 1 lost, player 2 wins
+        }
+        else if (player2.health <= 0) {
+            music.stop();
+            this.game.state.start('end', true, false, player2, player1); // player 2 wins, player 1 lost
+        }
+
+        if (timer.running == false && htp.exists == false){
+            music.stop();
+            if(player1.health > player2.health) {
+                this.game.state.start('end', true, false, player2, player1);
+            }
+            else if (player2.health > player1.health) {
+                this.game.state.start('end', true, false, player1, player2);
+            }
+            else {
+                this.game.state.start('end');
+            }
+        }
+
+
         // this.game.physics.arcade.overlap(player2, p1_lasers_hitbox, overlap, null, this);
         // this.game.physics.arcade.overlap(player1, p2_lasers_hitbox, overlap, null, this);
         // this.game.physics.arcade.overlap(p1_attack_hitboxes, player2, overlap, null, this);
@@ -780,17 +804,17 @@ playState.prototype = {
        // this.game.debug.body(player2);
    
 
-//          //player 1 body hitboxes   
-//         for(var i = 0; i < p1_hitboxes.children.length; i++){
-//          
-//             this.game.debug.body(p1_hitboxes.children[i]);
-//         }
-//         // player 2 body hitboxes
-//         for(var i = 0; i < p2_hitboxes.children.length; i++){
-//          
-//             this.game.debug.body(p2_hitboxes.children[i]);
-//         }
-// //
+         //player 1 body hitboxes   
+        for(var i = 0; i < p1_hitboxes.children.length; i++){
+         
+            this.game.debug.body(p1_hitboxes.children[i]);
+        }
+        // player 2 body hitboxes
+        for(var i = 0; i < p2_hitboxes.children.length; i++){
+         
+            this.game.debug.body(p2_hitboxes.children[i]);
+        }
+//
         // player 1 attack hitboxes
         for(var i = 0; i < p1_attack_hitboxes.children.length; i++){
          
@@ -810,10 +834,38 @@ playState.prototype = {
 
     shutdown: function() {
         console.log('shutdown called');
-        
+
         /**
          NEED TO FIND A WAY TO CALL 'PLAY' STATE WITH ACTIVE HITBOXES AFTER GAME OVER SCREEN
         */
+
+
+        // p1_attack_hitboxes;
+        // p2_attack_hitboxes;
+
+        for (var i = 0; i < p1_attack_hitboxes.length; i++) {
+
+            p1_attack_hitboxes.children[i].destroy()
+            // enableAllHitboxes(p1_attack_hitboxes.children[i].name, p1_attack_hitboxes, p1_attack_hitbox_locations)
+            // disableAllHitboxes(p1_attack_hitboxes.children[i].name, p1_attack_hitboxes)
+            // console.log(p1_attack_hitboxes.children[i].name)
+            // console.log(p1_attack_hitboxes.children[i].position)
+        }
+
+        for (var i = 0; i < p2_attack_hitboxes.length; i++) {
+
+            p2_attack_hitboxes.children[i].destroy()
+            // enableAllHitboxes(p2_attack_hitboxes.children[i].name, p2_attack_hitboxes, p2_attack_hitbox_locations)
+            // disableAllHitboxes(p2_attack_hitboxes.children[i].name, p2_attack_hitboxes)
+            // console.log(p2_attack_hitboxes.children[i].name)
+            // console.log(p2_attack_hitboxes.children[i].position)
+        }
+
+        // p1_attack_hitboxes.destroy()
+        // p2_attack_hitboxes.destroy()
+        console.log(p1_attack_hitboxes, p2_attack_hitboxes)
+
+        this.game.world.removeAll();
 
         
         // p1_attack_hitboxes.forEachExists(function(hitbox) {  // for punch hitboxes
@@ -850,6 +902,9 @@ function enableAllHitboxes(hitboxName, hitboxGroup, hitboxGroupLocations) {
             x_pos += hitboxGroup.parent.x;
             y_pos += hitboxGroup.parent.y;
             hitboxGroup.children[i].reset(x_pos, y_pos);
+            // console.log('THE RESET POS IS ' + x_pos + y_pos)
+            // hitboxGroup.children[i].alive = true
+            // hitboxGroup.children[i].visible = true
 
             if (hitboxName != 'head') {
                 console.log('enabled hitbox for ' + hitboxName);
@@ -932,26 +987,15 @@ function overlap(player_hitbox, attack_hitbox) {
         }      
     }
     
-    if (player1.health <= 0) {
-        music.stop();
-        this.game.state.start('end', true, false, player1, player2); // player 1 lost, player 2 wins
-    }
-    else if (player2.health <= 0) {
-        music.stop();
-        this.game.state.start('end', true, false, player2, player1); // player 2 wins, player 1 lost
-    }
-    if (timer.running == false && htp.exists == false){
-        music.stop();
-        if(player1.health > player2.health) {
-            this.game.state.start('end', true, false, player2, player1);
-        }
-        else if (player2.health > player1.health) {
-            this.game.state.start('end', true, false, player1, player2);
-        }
-        else {
-            this.game.state.start('end');
-        }
-    }
+    // if (player1.health <= 0) {
+    //     music.stop();
+    //     this.game.state.start('end', true, false, player1, player2); // player 1 lost, player 2 wins
+    // }
+    // else if (player2.health <= 0) {
+    //     music.stop();
+    //     this.game.state.start('end', true, false, player2, player1); // player 2 wins, player 1 lost
+    // }
+    
     
     //player1.health = player1.health -10;
     //console.log('hit player 2');
