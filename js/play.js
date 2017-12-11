@@ -456,23 +456,54 @@ playState.prototype = {
 
         if (player1.health <= 0) {
             music.stop();
-            this.game.state.start('end', true, false, player1, player2); // player 1 lost, player 2 wins
+
+            p1_attack_hitboxes.destroy(true, false)
+            p2_attack_hitboxes.destroy(true, false)
+            // for (var i = 0; i < p1_attack_anim_list.length; i++) {
+
+
+
+            //     attackAnimStarted(player1, p1_attack_anim_list[i]);
+                
+                
+            //     // p1_attack_hitboxes.children[i].destroy()
+            //     // enableAllHitboxes(p1_attack_hitboxes.children[i].name, p1_attack_hitboxes, p1_attack_hitbox_locations)
+            //     // disableAllHitboxes(p1_attack_hitboxes.children[i].name, p1_attack_hitboxes)
+            //     // console.log(p1_attack_hitboxes.children[i].name)
+            //     // console.log(p1_attack_hitboxes.children[i].position)
+            // }
+
+            // for (var i = 0; i < p2_attack_anim_list.length; i++) {
+                
+
+            //     attackAnimStarted(player2, p2_attack_anim_list[i]);
+                
+
+            //     // p2_attack_hitboxes.children[i].destroy()
+            //     // enableAllHitboxes(p2_attack_hitboxes.children[i].name, p2_attack_hitboxes, p2_attack_hitbox_locations)
+            //     // disableAllHitboxes(p2_attack_hitboxes.children[i].name, p2_attack_hitboxes)
+            //     // console.log(p2_attack_hitboxes.children[i].name)
+            //     // console.log(p2_attack_hitboxes.children[i].position)
+            // }
+            this.game.state.restart();
+            // this.game.state.start('end', true, true, player1, player2); // player 1 lost, player 2 wins
+
         }
         else if (player2.health <= 0) {
             music.stop();
-            this.game.state.start('end', true, false, player2, player1); // player 2 wins, player 1 lost
+            this.game.state.start('end', true, true, player2, player1); // player 2 wins, player 1 lost
         }
 
         if (timer.running == false && htp.exists == false){
             music.stop();
             if(player1.health > player2.health) {
-                this.game.state.start('end', true, false, player2, player1);
+                this.game.state.start('end', true, true, player2, player1);
             }
             else if (player2.health > player1.health) {
-                this.game.state.start('end', true, false, player1, player2);
+                this.game.state.start('end', true, true, player1, player2);
             }
             else {
-                this.game.state.start('end');
+                this.game.state.start('end', true, true, player1, player2); // p1 wins in a tie with equal health
             }
         }
 
@@ -843,28 +874,27 @@ playState.prototype = {
         // p1_attack_hitboxes;
         // p2_attack_hitboxes;
 
-        for (var i = 0; i < p1_attack_hitboxes.length; i++) {
+        // for (var i = 0; i < p1_attack_hitboxes.length; i++) {
 
-            p1_attack_hitboxes.children[i].destroy()
-            // enableAllHitboxes(p1_attack_hitboxes.children[i].name, p1_attack_hitboxes, p1_attack_hitbox_locations)
-            // disableAllHitboxes(p1_attack_hitboxes.children[i].name, p1_attack_hitboxes)
-            // console.log(p1_attack_hitboxes.children[i].name)
-            // console.log(p1_attack_hitboxes.children[i].position)
-        }
+        //     // p1_attack_hitboxes.children[i].destroy()
+        //     // enableAllHitboxes(p1_attack_hitboxes.children[i].name, p1_attack_hitboxes, p1_attack_hitbox_locations)
+        //     // disableAllHitboxes(p1_attack_hitboxes.children[i].name, p1_attack_hitboxes)
+        //     // console.log(p1_attack_hitboxes.children[i].name)
+        //     // console.log(p1_attack_hitboxes.children[i].position)
+        // }
 
-        for (var i = 0; i < p2_attack_hitboxes.length; i++) {
+        // for (var i = 0; i < p2_attack_hitboxes.length; i++) {
 
-            p2_attack_hitboxes.children[i].destroy()
-            // enableAllHitboxes(p2_attack_hitboxes.children[i].name, p2_attack_hitboxes, p2_attack_hitbox_locations)
-            // disableAllHitboxes(p2_attack_hitboxes.children[i].name, p2_attack_hitboxes)
-            // console.log(p2_attack_hitboxes.children[i].name)
-            // console.log(p2_attack_hitboxes.children[i].position)
-        }
+        //     // p2_attack_hitboxes.children[i].destroy()
+        //     // enableAllHitboxes(p2_attack_hitboxes.children[i].name, p2_attack_hitboxes, p2_attack_hitbox_locations)
+        //     // disableAllHitboxes(p2_attack_hitboxes.children[i].name, p2_attack_hitboxes)
+        //     // console.log(p2_attack_hitboxes.children[i].name)
+        //     // console.log(p2_attack_hitboxes.children[i].position)
+        // }
 
         // p1_attack_hitboxes.destroy()
         // p2_attack_hitboxes.destroy()
-        console.log(p1_attack_hitboxes, p2_attack_hitboxes)
-
+        // console.log(p1_attack_hitboxes, p2_attack_hitboxes)
         this.game.world.removeAll();
 
         
@@ -892,15 +922,19 @@ function enableAllHitboxes(hitboxName, hitboxGroup, hitboxGroupLocations) {
 
         if (hitboxGroup.children[i].name == hitboxName) {
 
-            var x_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_x"]
-            var y_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_y"]
+            var x_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_x"];
+            var y_pos = hitboxGroupLocations[hitboxGroup.children[i].name + "_y"];
             // console.log(hitboxGroup.parent);
             // if (hitboxName == 'head') {
             //     x_pos += hitboxGroup.parent.x;
             //     y_pos += hitboxGroup.parent.y;
             // }
             x_pos += hitboxGroup.parent.x;
+            // console.log('parent position x is ', hitboxGroup.parent.x)
             y_pos += hitboxGroup.parent.y;
+            // console.log('parent position y is ', hitboxGroup.parent.y)
+            // hitboxGroup.children[i].fresh = true
+            // hitboxGroup.children[i].exists = true
             hitboxGroup.children[i].reset(x_pos, y_pos);
             // console.log('THE RESET POS IS ' + x_pos + y_pos)
             // hitboxGroup.children[i].alive = true
@@ -1094,6 +1128,7 @@ function resetLaser(laser) {
     laser.kill();
     console.log('killed laser');
 }
+
 
 /*
 function chipDamage(player1, player2){

@@ -40,6 +40,6 @@ end_screen.prototype = {
     },
 
     start: function() {
-        this.game.state.start('play', true, false);
+        this.game.state.start('boot', true, true);
     }
 }
